@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sshd.nix
+      ./hyprland.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -16,8 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # chaotic.scx.enable = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
@@ -35,7 +36,12 @@
     zsh
     btop
     tmux
+    google-chrome
+    wezterm
+    waybar
+    kitty
   ];
+  nixpkgs.config.allowUnfree = true;
   console = {
     # font = "Lat2-Terminus16";
     keyMap = "jp106";
@@ -43,17 +49,23 @@
   fonts.packages = with pkgs; [
     noto-fonts-cjk-sans
   ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings = {
+    max-substitution-jobs = 8;
+    http-connections = 50;
+    connect-timeout = 5;
     substituters = [
       "https://chaotic-nyx.cachix.org/"
     ];
-    #trusted-public-keys = [
-    #  "chaotic-nyx.cachix.org-1:9964890965306631853"
-    #  # もし上記でダメな場合は、公式サイト推奨のこちらも試してください
-    #  "nyx.chaotic.cx-1:9964890965306631853"
-    #];
   };
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+
+  programs.hyprland.enable = true;
 
 
   # Configure network connections interactively with nmcli or nmtui.
