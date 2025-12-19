@@ -44,6 +44,16 @@
     noto-fonts-cjk-sans
   ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    substituters = [
+      "https://chaotic-nyx.cachix.org/"
+    ];
+    #trusted-public-keys = [
+    #  "chaotic-nyx.cachix.org-1:9964890965306631853"
+    #  # もし上記でダメな場合は、公式サイト推奨のこちらも試してください
+    #  "nyx.chaotic.cx-1:9964890965306631853"
+    #];
+  };
 
 
   # Configure network connections interactively with nmcli or nmtui.
