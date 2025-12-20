@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sshd.nix
-      ./hyprland.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -28,7 +27,20 @@
 
   boot.supportedFilesystems = [ "f2fs" ];
   time.timeZone = "Asia/Tokyo";
+  
   i18n.defaultLocale = "ja_JP.UTF-8";
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-mozc-ut
+	fcitx5-gtk
+      ];
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     neovim
     git
@@ -40,7 +52,17 @@
     wezterm
     waybar
     kitty
+    discord
+    python3
+    gcc
+    gnumake
+    binutils
+    pkg-config
+    autoconf
+    automake
+    xdg-utils
   ];
+  environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
   nixpkgs.config.allowUnfree = true;
   console = {
     # font = "Lat2-Terminus16";
@@ -48,6 +70,8 @@
   };
   fonts.packages = with pkgs; [
     noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
   ];
   nix.settings = {
     max-substitution-jobs = 8;
@@ -56,17 +80,30 @@
     substituters = [
       "https://chaotic-nyx.cachix.org/"
     ];
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "root" "hmjn"];
   };
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
   };
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
 
-  programs.hyprland.enable = true;
-
+  programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+    glibc
+  ];
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
 
   # Configure network connections interactively with nmcli or nmtui.
   # networking.networkmanager.enable = true;
@@ -122,6 +159,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.hmjn = {
      isNormalUser = true;
+     shell = pkgs.zsh;
      extraGroups = [ "wheel" ];
      hashedPassword = "$6$Bh8Qjg9kNaQyaiUX$V5caBX7osT.52VhM2mKP45qr.EhjE.XbImwJqBwJFl5ZxSD9DxCxy2WggwiEfRHqZR3L0pnrdj1WMgxmrM6lZ1";
      packages = with pkgs; [

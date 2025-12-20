@@ -9,9 +9,17 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "uas" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "i915" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+    ];
+  };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/d366af87-2f45-4db5-b53b-a5165293e793";
