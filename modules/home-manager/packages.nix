@@ -38,5 +38,6 @@
     gcc
     gnumake
     python3
+    uv
   ];
 }

@@ -47,7 +47,6 @@
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
     stdenv.cc.cc.lib
     zlib
     fuse3
@@ -64,6 +63,22 @@
     xorg.libXext
     xorg.libXrender
     xorg.libXi
+    xorg.libXcomposite
+    xorg.libXdamage
+    xorg.libXfixes
+    xorg.libXrandr
+    xorg.libXcursor
+    xorg.libXtst
+    alsa-lib
+    nspr
+    dbus
+    at-spi2-atk
+    at-spi2-core
+    cups
+    libdrm
+    mesa
+    libxkbcommon
+    wayland
   ];
 
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
