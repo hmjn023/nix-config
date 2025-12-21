@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  services.swayosd.enable = true;
+
   services.hyprpaper = {
     enable = true;
     settings = {
@@ -28,6 +30,9 @@
       # Environment variables
       env = [
         "XCURSOR_SIZE,24"
+        "GTK_IM_MODULE,fcitx"
+        "QT_IM_MODULE,fcitx"
+        "XMODIFIERS,@im=fcitx"
       ];
 
       cursor = {
@@ -38,7 +43,6 @@
         "mako"
         "waybar"
         "fcitx5"
-        "swayosd-server"
         "xwaylandvideobridge"
         "[workspace 1 silent] wezterm"
         "[workspace 2 silent] google-chrome-stable"
@@ -52,8 +56,18 @@
         touchpad = {
           natural_scroll = "no";
         };
-        sensitivity = 0;
       };
+
+			#device = [
+			#	{
+			#		name = "tpps/2-synaptics-trackpoint";
+			#		sensitivity = -0.5;
+			#		scroll_method = "on_button_down";
+			#		scroll_button = 274;
+			#		scroll_button_lock = 0;
+			#	}
+			#];
+
 
       general = {
         gaps_in = 2;
@@ -94,11 +108,13 @@
 
       misc = {
         force_default_wallpaper = 0;
+				middle_click_paste = false;
       };
 
       "$mainMod" = "SUPER";
 
       bind = [
+				", mouse:274, exec, "
         # Audio
         ",XF86AudioRaiseVolume,exec,swayosd-client --output-volume raise"
         ",XF86AudioLowerVolume,exec,swayosd-client --output-volume lower"

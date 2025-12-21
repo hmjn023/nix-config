@@ -25,11 +25,18 @@
   networking.wireless.iwd.enable = true;
   networking.useDHCP = true;
 
+  # Trackpoint Scroll
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="TPPS/2 Synaptics TrackPoint", ENV{LIBINPUT_SCROLL_METHOD}="button", ENV{LIBINPUT_SCROLL_BUTTON}="274"
+  '';
+
+
+
   # User Account
   users.users.hmjn = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "video" "render" ];
     hashedPassword = "$6$Bh8Qjg9kNaQyaiUX$V5caBX7osT.52VhM2mKP45qr.EhjE.XbImwJqBwJFl5ZxSD9DxCxy2WggwiEfRHqZR3L0pnrdj1WMgxmrM6lZ1";
     packages = with pkgs; [
       tree

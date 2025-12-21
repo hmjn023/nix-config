@@ -43,7 +43,7 @@
     };
 
     # Init Content (was initExtra)
-    initContent = ''
+    initExtra = ''
       # PATH exports
       export PATH=/var/lib/snapd/snap/bin:$PATH
       export PATH=$HOME/.local/bin:$PATH

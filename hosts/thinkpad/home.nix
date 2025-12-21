@@ -7,6 +7,7 @@
     ../../modules/home-manager/mise.nix
     ../../modules/home-manager/nodejs.nix
     ../../modules/home-manager/git.nix
+		../../modules/home-manager/gtk.nix
     ../../modules/home-manager/packages.nix
     ../../modules/home-manager/nvim.nix
     ../../modules/home-manager/kitty.nix
