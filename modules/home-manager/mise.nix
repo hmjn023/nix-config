@@ -5,8 +5,8 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      all_compile = false;      # 強制コンパイルをオフ
-      experimental = true;     # もし新しい機能を使うなら
+      all_compile = false; # 強制コンパイルをオフ
+      experimental = true; # もし新しい機能を使うなら
     };
   };
 }

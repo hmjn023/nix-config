@@ -11,11 +11,11 @@
       "https://chaotic-nyx.cachix.org/"
     ];
     experimental-features = [ "nix-command" "flakes" ];
-    trusted-users = [ "root" "hmjn"];
+    trusted-users = [ "root" "hmjn" ];
   };
 
   programs.zsh.enable = true;
-  
+
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc
@@ -28,6 +28,6 @@
     expat
     glibc
   ];
-  
+
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
 }

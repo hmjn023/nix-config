@@ -6,7 +6,7 @@
     mouse = true;
     historyLimit = 10000;
     sensibleOnTop = false; # sensible plugin handles this, but we'll include sensible manually via plugins if needed, or rely on hm defaults
-    
+
     plugins = with pkgs.tmuxPlugins; [
       sensible
       urlview

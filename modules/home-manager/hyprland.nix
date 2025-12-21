@@ -18,7 +18,7 @@
     enable = true;
     package = pkgs.hyprland;
     xwayland.enable = true;
-    
+
     settings = {
       # Monitor config
       monitor = [
@@ -104,11 +104,11 @@
         ",XF86AudioLowerVolume,exec,swayosd-client --output-volume lower"
         ",XF86AudioMute,exec,swayosd-client --output-volume mute-toggle"
         ",XF86AudioMicMute,exec,swayosd-client --input-volume mute-toggle"
-        
+
         # Brightness
         ", XF86MonBrightnessUp,exec,swayosd-client --brightness raise"
         ", XF86MonBrightnessDown,exec,swayosd-client --brightness lower"
-        
+
         # Apps
         "$mainMod, T, exec, kitty"
         "$mainMod, Return, exec, wezterm"
@@ -116,7 +116,7 @@
         "$mainMod, D, exec, wofi --show drun -I"
         "$mainModShift, T, exec, kitty iwctl"
         "CTRLSHIFT, Escape, exec, kitty btop"
-        
+
         # Window management
         "$mainModSHIFT, Q, killactive,"
         "$mainModSHIFT, E, exit,"
@@ -126,12 +126,12 @@
         # Scripts
         "$mainMod, W, exec, $HOME/eww.sh"
         "$mainModShift, W, exec, $HOME/side.sh"
-        
+
         # Screenshot / OCR
         "$mainModShift, S, exec, grim -g \"$(slurp)\" -|wl-copy"
         "$mainMod, O, exec, grim -g \"$(slurp)\" -|tesseract -l eng stdin stdout |sed \"s/ //g\" |wl-copy"
         "$mainModShift, O, exec, grim -g \"$(slurp)\" -|tesseract -l jpn+eng stdin stdout |sed \"s/ //g\" |wl-copy"
-        
+
         # Lock / Reload
         "$mainModShift, L, exec, swaylock -f --font \"Noto Sans Mono CJK JP\" -C ~/.config/swaylock/config"
         "$mainModShift,N,exec ,swaync-client -t -sw"
@@ -170,7 +170,7 @@
         "$mainMod SHIFT, 8, movetoworkspace, 8"
         "$mainMod SHIFT, 9, movetoworkspace, 9"
         "$mainMod SHIFT, 0, movetoworkspace, 10"
-        
+
         # Special workspace
         "$mainMod, S, togglespecialworkspace, magic"
         "$mainMod, S, movetoworkspace, +0"

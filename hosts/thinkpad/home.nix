@@ -12,6 +12,7 @@
     ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/wezterm.nix
     ../../modules/home-manager/tmux.nix
+    ../../modules/home-manager/zzz.nix
   ];
 
   home.username = "hmjn";

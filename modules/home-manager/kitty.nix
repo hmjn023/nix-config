@@ -3,7 +3,7 @@
 {
   programs.kitty = {
     enable = true;
-    
+
     font = {
       name = "NotoSansM Nerd Font Mono";
       size = 14;
@@ -16,7 +16,7 @@
       bold_italic_font = "auto";
       force_ltr = "no";
       disable_ligatures = "never";
-      
+
       # Cursor
       cursor = "#cccccc";
       cursor_text_color = "#111111";
