@@ -25,9 +25,9 @@
   networking.wireless.iwd.enable = true;
   networking.useDHCP = true;
 
-  # Trackpoint Scroll
+  # Trackpoint Scroll & Sensitivity
   services.udev.extraRules = ''
-    ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="TPPS/2 Synaptics TrackPoint", ENV{LIBINPUT_SCROLL_METHOD}="button", ENV{LIBINPUT_SCROLL_BUTTON}="274"
+    ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="TPPS/2 Synaptics TrackPoint", ENV{LIBINPUT_SCROLL_METHOD}="button", ENV{LIBINPUT_SCROLL_BUTTON}="274", ENV{LIBINPUT_CONFIG_ACCEL_SPEED}="-0.5"
   '';
 
 

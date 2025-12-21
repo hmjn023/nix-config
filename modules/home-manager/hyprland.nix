@@ -56,18 +56,8 @@
         touchpad = {
           natural_scroll = "no";
         };
+        sensitivity = -0.5;
       };
-
-			#device = [
-			#	{
-			#		name = "tpps/2-synaptics-trackpoint";
-			#		sensitivity = -0.5;
-			#		scroll_method = "on_button_down";
-			#		scroll_button = 274;
-			#		scroll_button_lock = 0;
-			#	}
-			#];
-
 
       general = {
         gaps_in = 2;
@@ -210,6 +200,13 @@
         "3, horizontal, workspace"
       ];
     };
+
+    extraConfig = ''
+      device {
+        name = elan0676:00-04f3:3195-touchpad
+        sensitivity = 0
+      }
+    '';
   };
 
   # Dependencies for the config
