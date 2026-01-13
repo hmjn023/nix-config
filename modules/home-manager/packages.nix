@@ -8,6 +8,8 @@
     kdePackages.dolphin
 		antigravity
 		vscode
+		steam
+		vivaldi
 		
     # Gaming
     inputs.chaotic.packages.${pkgs.system}.proton-cachyos

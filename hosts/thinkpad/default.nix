@@ -9,6 +9,7 @@
       ../../modules/nixos/sound.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/core.nix
+      ../../modules/nixos/bluetooth.nix
     ];
 
   # Bootloader

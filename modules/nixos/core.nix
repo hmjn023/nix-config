@@ -25,6 +25,7 @@
       intel-graphics-compiler
       level-zero
       vpl-gpu-rt
+			oneDNN_2
     ];
   };
 
