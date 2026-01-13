@@ -19,6 +19,7 @@
 
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelParams = [ "i915.force_probe=7d55" "i915.enable_guc=3" ];
   # chaotic.scx.enable = true;
 
   # Networking

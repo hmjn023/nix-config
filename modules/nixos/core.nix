@@ -49,6 +49,7 @@
   # Intel GPU環境変数
   environment.variables = {
     SYCL_CACHE_PERSISTENT = "1";
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
   programs.nix-ld.enable = true;
