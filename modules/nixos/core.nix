@@ -46,6 +46,11 @@
 
   virtualisation.docker.enable = true;
 
+  # Intel GPU環境変数
+  environment.variables = {
+    SYCL_CACHE_PERSISTENT = "1";
+  };
+
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc.lib
@@ -80,6 +85,12 @@
     mesa
     libxkbcommon
     wayland
+    
+    # Intel GPU support
+    level-zero
+    intel-compute-runtime
+    intel-media-driver
+    oneDNN_2
   ];
 
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];

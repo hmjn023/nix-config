@@ -41,5 +41,7 @@
     gnumake
     python3
     uv
+    clinfo
+    vulkan-tools
   ];
 }
