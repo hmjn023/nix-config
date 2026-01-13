@@ -22,11 +22,16 @@
     extraPackages = with pkgs; [
       intel-media-driver
       intel-compute-runtime
+      intel-compute-runtime.drivers
       intel-graphics-compiler
       level-zero
       vpl-gpu-rt
 			oneDNN_2
     ];
+  };
+
+  boot.kernel.sysctl = {
+    "dev.i915.perf_stream_paranoid" = 0;
   };
 
   security.polkit.extraConfig = ''
