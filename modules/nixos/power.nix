@@ -19,6 +19,12 @@
       # ThinkPadのバッテリー充電しきい値 (寿命を延ばす)
       START_CHARGE_THRESH_BAT0 = 75;
       STOP_CHARGE_THRESH_BAT0 = 80;
+
+      # Wake-on-LANを無効化 (勝手な起動を防ぐ)
+      WOL_DISABLE = "Y";
+      
+      # USB自動サスペンドを一時的に無効化 (トラブルシューティング)
+      USB_AUTOSUSPEND = 0;
     };
   };
 
@@ -26,5 +32,6 @@
   services.thermald.enable = true;
 
   # その他の電力管理
-  powerManagement.powertop.enable = true;
+  # TLPと競合するため無効化
+  powerManagement.powertop.enable = false;
 }

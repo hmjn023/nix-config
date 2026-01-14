@@ -16,6 +16,31 @@
 
   programs.zsh.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    (btop.overrideAttrs (oldAttrs: {
+      src = fetchFromGitHub {
+        owner = "deveworld";
+        repo = "btop";
+        rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
+        hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
+      };
+    }))
+  ];
+
+  security.wrappers.btop = {
+    source = "${pkgs.btop.overrideAttrs (oldAttrs: {
+      src = pkgs.fetchFromGitHub {
+        owner = "deveworld";
+        repo = "btop";
+        rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
+        hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
+      };
+    })}/bin/btop";
+    capabilities = "cap_perfmon=+ep";
+    owner = "root";
+    group = "root";
+  };
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -24,6 +49,7 @@
       intel-compute-runtime
       intel-compute-runtime.drivers
       intel-graphics-compiler
+      intel-npu-driver
       level-zero
       vpl-gpu-rt
 			oneDNN_2
@@ -92,10 +118,11 @@
     libxkbcommon
     wayland
     
-    # Intel GPU support
+    # Intel GPU and NPU support
     level-zero
     intel-compute-runtime
     intel-media-driver
+    intel-npu-driver
     oneDNN_2
   ];
 

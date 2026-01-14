@@ -20,8 +20,19 @@
 
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  boot.kernelParams = [ "i915.force_probe=7d55" "i915.enable_guc=3" ];
+  boot.kernelParams = [ "i915.force_probe=7d55" "i915.enable_guc=3" "nowatchdog" ];
+  boot.kernelModules = [ "intel_vpu" ];
   # chaotic.scx.enable = true;
+
+  # Fix high CPU usage caused by ACPI interrupt storm (gpe6D)
+  systemd.services.disable-gpe6d = {
+    description = "Disable GPE 6D to prevent high CPU usage";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.runtimeShell} -c 'grep -q disabled /sys/firmware/acpi/interrupts/gpe6D || echo disable > /sys/firmware/acpi/interrupts/gpe6D'";
+    };
+  };
 
   # Networking
   networking.hostName = "thinkpad";

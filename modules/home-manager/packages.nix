@@ -16,7 +16,6 @@
     steam-run
 
     # CLI Tools
-    btop
     f2fs-tools
     xdg-utils
     lsd
