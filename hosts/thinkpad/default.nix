@@ -11,6 +11,7 @@
       ../../modules/nixos/core.nix
       ../../modules/nixos/bluetooth.nix
       ../../modules/nixos/power.nix
+      ../../modules/nixos/waydroid.nix
     ];
 
   # Bootloader
@@ -25,14 +26,22 @@
   # chaotic.scx.enable = true;
 
   # Fix high CPU usage caused by ACPI interrupt storm (gpe6D)
+  # Disable on boot
   systemd.services.disable-gpe6d = {
     description = "Disable GPE 6D to prevent high CPU usage";
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.runtimeShell} -c 'grep -q disabled /sys/firmware/acpi/interrupts/gpe6D || echo disable > /sys/firmware/acpi/interrupts/gpe6D'";
+      ExecStart = "${pkgs.runtimeShell} -c 'echo disable > /sys/firmware/acpi/interrupts/gpe6D'";
+      # Ignore errors if already disabled
+      SuccessExitStatus = "0 1"; 
     };
   };
+  
+  # Disable on resume from suspend/hibernate
+  powerManagement.resumeCommands = ''
+    echo disable > /sys/firmware/acpi/interrupts/gpe6D
+  '';
 
   # Networking
   networking.hostName = "thinkpad";
@@ -50,7 +59,7 @@
   users.users.hmjn = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "video" "render" "docker" ];
+    extraGroups = [ "wheel" "video" "render" "docker" "input" ];
     hashedPassword = "$6$Bh8Qjg9kNaQyaiUX$V5caBX7osT.52VhM2mKP45qr.EhjE.XbImwJqBwJFl5ZxSD9DxCxy2WggwiEfRHqZR3L0pnrdj1WMgxmrM6lZ1";
     packages = with pkgs; [
       tree

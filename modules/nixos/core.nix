@@ -77,6 +77,10 @@
 
   virtualisation.docker.enable = true;
 
+  # Controller support
+  hardware.uinput.enable = true;
+  services.udev.packages = [ pkgs.game-devices-udev-rules ];
+
   # Intel GPU環境変数
   environment.variables = {
     SYCL_CACHE_PERSISTENT = "1";

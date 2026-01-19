@@ -104,7 +104,6 @@
       "$mainMod" = "SUPER";
 
       bind = [
-				", mouse:274, exec, "
         # Audio
         ",XF86AudioRaiseVolume,exec,swayosd-client --output-volume raise"
         ",XF86AudioLowerVolume,exec,swayosd-client --output-volume lower"
