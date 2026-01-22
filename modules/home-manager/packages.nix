@@ -34,6 +34,7 @@
 		dua
 		ouch
 		gh
+		yt-dlp
 
     # Dev
     gcc
