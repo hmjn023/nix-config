@@ -9,14 +9,13 @@
       ../../modules/nixos/sound.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/core.nix
-      ../../modules/nixos/intel.nix
       ../../modules/nixos/bluetooth.nix
-      ../../modules/nixos/power.nix
       ../../modules/nixos/waydroid.nix
       ../../modules/nixos/network.nix
       ../../modules/nixos/sddm.nix
       ../../modules/nixos/packages.nix
       ../../modules/nixos/steam.nix
+      ../../modules/nixos/nvidia.nix
     ];
 
   # Bootloader
@@ -25,24 +24,22 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    supportedFilesystems = [ "f2fs" ];
 
     # Kernel
     kernelPackages = pkgs.linuxPackages_cachyos;
-    kernelModules = [ "intel_vpu" ];
   };
 
   # Networking
   networking = {
-    hostName = "thinkpad";
+    hostName = "desk-dell";
     wireless.iwd.enable = true;
     useDHCP = true;
   };
 
-  # Monitor configuration
+  # Monitor configuration (Example for Desktop)
   system.monitors = [
-    { name = "eDP-1"; resolution = "1920x1200"; position = "0x0"; scale = "1"; }
-    { name = "DP-1"; resolution = "3840x2160"; position = "1920x0"; scale = "1"; }
+    { name = "DP-1"; resolution = "3840x2160"; position = "0x0"; scale = "1"; }
+    { name = "HDMI-A-1"; resolution = "1920x1080"; position = "3840x0"; scale = "1"; }
   ];
 
   # User Account

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   # Wrapper to run Proton inside steam-run environment to fix library issues (FreeType etc.)

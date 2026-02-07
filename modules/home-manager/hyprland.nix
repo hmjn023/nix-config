@@ -1,4 +1,4 @@
-{ config, pkgs, osConfig, ... }:
+{ pkgs, osConfig, ... }:
 
 {
   services.swayosd.enable = true;
@@ -40,9 +40,11 @@
 
     settings = {
       # Monitor config
-      monitor = map (
-        m: "${m.name},${m.resolution},${m.position},${m.scale}"
-      ) osConfig.system.monitors;
+      monitor = map
+        (
+          m: "${m.name},${m.resolution},${m.position},${m.scale}"
+        )
+        osConfig.system.monitors;
 
       # Environment variables
       env = [
@@ -115,7 +117,7 @@
 
       misc = {
         force_default_wallpaper = 0;
-				middle_click_paste = false;
+        middle_click_paste = false;
       };
 
       "$mainMod" = "SUPER";

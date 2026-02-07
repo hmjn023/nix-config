@@ -1,10 +1,11 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Bluetoothの有効化
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
   # Blueman (Bluetoothマネージャー) の有効化
   services.blueman.enable = true;
 
