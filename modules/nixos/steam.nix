@@ -6,7 +6,7 @@
   # System-wide Packages for Gaming
   environment.systemPackages = with pkgs; [
     steam-run
-    inputs.chaotic.packages.${pkgs.system}.proton-cachyos
+    inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos
   ];
 
   # Enable Steam

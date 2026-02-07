@@ -1,6 +1,7 @@
 _: {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "192.168.1.26" = {
         hostname = "192.168.1.26";
