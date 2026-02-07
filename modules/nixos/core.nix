@@ -1,7 +1,37 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  nixpkgs.config.allowUnfree = true;
+  options.system.monitors = lib.mkOption {
+    type = lib.types.listOf (lib.types.submodule {
+      options = {
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "Monitor name (e.g., eDP-1). Empty string means default monitor (',').";
+        };
+        resolution = lib.mkOption {
+          type = lib.types.str;
+          default = "preferred";
+          description = "Monitor resolution (e.g., 1920x1080@60).";
+        };
+        position = lib.mkOption {
+          type = lib.types.str;
+          default = "auto";
+          description = "Monitor position (e.g., 0x0).";
+        };
+        scale = lib.mkOption {
+          type = lib.types.str;
+          default = "1";
+          description = "Monitor scale.";
+        };
+      };
+    });
+    default = [ { name = ""; resolution = "preferred"; position = "auto"; scale = "1"; } ];
+    description = "List of monitor configurations.";
+  };
+
+  config = {
+    nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
     max-substitution-jobs = 8;
@@ -131,4 +161,5 @@
   ];
 
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
+  };
 }

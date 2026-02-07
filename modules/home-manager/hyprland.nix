@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, osConfig, ... }:
 
 {
   services.swayosd.enable = true;
@@ -40,9 +40,9 @@
 
     settings = {
       # Monitor config
-      monitor = [
-        ",1920x1200,auto,1"
-      ];
+      monitor = map (
+        m: "${m.name},${m.resolution},${m.position},${m.scale}"
+      ) osConfig.system.monitors;
 
       # Environment variables
       env = [

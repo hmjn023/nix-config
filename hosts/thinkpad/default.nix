@@ -31,6 +31,12 @@
   networking.wireless.iwd.enable = true;
   networking.useDHCP = true;
 
+  # Monitor configuration
+  system.monitors = [
+    { name = "eDP-1"; resolution = "1920x1200"; position = "0x0"; scale = "1"; }
+		{ name = "DP-1"; resolution = "3840x2160"; position = "1920x0"; scale = "1";}
+  ];
+
   # Display Manager
   services.displayManager.sddm = {
     enable = true;
