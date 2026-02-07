@@ -20,7 +20,7 @@
     mkdir -p "$STEAM_COMPAT_DATA_PATH"
 
     # Use steam-run to provide FHS environment with necessary libs
-    exec ${pkgs.steam-run}/bin/steam-run ${inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos}/bin/proton run "$@"
+    exec ${pkgs.steam-run}/bin/steam-run ${pkgs.proton-cachyos}/bin/proton run "$@"
   '';
 in {
   home.packages = [zzz-run];
