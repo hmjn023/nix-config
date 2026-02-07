@@ -28,7 +28,7 @@
   } @ inputs: let
     system = "x86_64-linux";
     pkgs-latest = import nixpkgs-latest {
-      inherit system;
+      system = "${system}";
       config.allowUnfree = true;
     };
   in {

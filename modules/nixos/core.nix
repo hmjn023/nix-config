@@ -145,7 +145,22 @@
     virtualisation.docker.enable = true;
 
     # Controller support
+
     hardware.uinput.enable = true;
+
+    environment.sessionVariables = {
+      # Fix KDE app integration
+
+      XDG_DATA_DIRS = [
+        "${pkgs.kdePackages.systemsettings}/share"
+
+        "${pkgs.kdePackages.plasma-pa}/share"
+
+        "${pkgs.kdePackages.bluedevil}/share"
+
+        "${pkgs.kdePackages.kirigami-addons}/share"
+      ];
+    };
 
     environment.pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
   };

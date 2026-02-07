@@ -35,5 +35,13 @@
     uv
     clinfo
     vulkan-tools
+
+    # KDE Tools
+    kdePackages.systemsettings
+    kdePackages.kde-cli-tools
+    kdePackages.plasma-pa # Audio settings
+    kdePackages.bluedevil # Bluetooth settings
+    kdePackages.kirigami-addons
+    kdePackages.qqc2-desktop-style
   ];
 }
