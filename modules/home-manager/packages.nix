@@ -11,5 +11,7 @@
     pkgs-latest.antigravity
     vscode
     vivaldi
+
+    gemini-cli
   ];
 }

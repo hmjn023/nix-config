@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
+{pkgs, ...}: let
   # Wrapper to run Proton inside steam-run environment to fix library issues (FreeType etc.)
   zzz-run = pkgs.writeShellScriptBin "zzz-run" ''
     export STEAM_COMPAT_DATA_PATH="$HOME/.local/share/zzz-proton"

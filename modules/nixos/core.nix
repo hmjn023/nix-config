@@ -94,16 +94,30 @@
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      (btop.overrideAttrs (_oldAttrs: {
-        src = fetchFromGitHub {
-          owner = "deveworld";
-          repo = "btop";
-          rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
-          hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
-        };
-      }))
-    ];
+    environment = {
+      systemPackages = with pkgs; [
+        (btop.overrideAttrs (_oldAttrs: {
+          src = fetchFromGitHub {
+            owner = "deveworld";
+            repo = "btop";
+            rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
+            hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
+          };
+        }))
+      ];
+
+      sessionVariables = {
+        # Fix KDE app integration
+        XDG_DATA_DIRS = [
+          "${pkgs.kdePackages.systemsettings}/share"
+          "${pkgs.kdePackages.plasma-pa}/share"
+          "${pkgs.kdePackages.bluedevil}/share"
+          "${pkgs.kdePackages.kirigami-addons}/share"
+        ];
+      };
+
+      pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
+    };
 
     security.wrappers.btop = {
       source = "${pkgs.btop.overrideAttrs (_oldAttrs: {
@@ -145,23 +159,6 @@
     virtualisation.docker.enable = true;
 
     # Controller support
-
     hardware.uinput.enable = true;
-
-    environment.sessionVariables = {
-      # Fix KDE app integration
-
-      XDG_DATA_DIRS = [
-        "${pkgs.kdePackages.systemsettings}/share"
-
-        "${pkgs.kdePackages.plasma-pa}/share"
-
-        "${pkgs.kdePackages.bluedevil}/share"
-
-        "${pkgs.kdePackages.kirigami-addons}/share"
-      ];
-    };
-
-    environment.pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
   };
 }

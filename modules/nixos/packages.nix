@@ -27,6 +27,8 @@
     ouch
     gh
     yt-dlp
+    nodejs_24
+    bun
 
     # Dev
     gcc
