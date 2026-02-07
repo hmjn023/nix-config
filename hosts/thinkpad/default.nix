@@ -1,23 +1,20 @@
-{ pkgs, ... }:
-
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-      ../../modules/nixos/sshd.nix
-      ../../modules/nixos/i18n.nix
-      ../../modules/nixos/sound.nix
-      ../../modules/nixos/fonts.nix
-      ../../modules/nixos/core.nix
-      ../../modules/nixos/intel.nix
-      ../../modules/nixos/bluetooth.nix
-      ../../modules/nixos/power.nix
-      ../../modules/nixos/waydroid.nix
-      ../../modules/nixos/network.nix
-      ../../modules/nixos/sddm.nix
-      ../../modules/nixos/packages.nix
-      ../../modules/nixos/steam.nix
-    ];
+{pkgs, ...}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/nixos/sshd.nix
+    ../../modules/nixos/i18n.nix
+    ../../modules/nixos/sound.nix
+    ../../modules/nixos/fonts.nix
+    ../../modules/nixos/core.nix
+    ../../modules/nixos/intel.nix
+    ../../modules/nixos/bluetooth.nix
+    ../../modules/nixos/power.nix
+    ../../modules/nixos/waydroid.nix
+    ../../modules/nixos/network.nix
+    ../../modules/nixos/sddm.nix
+    ../../modules/nixos/packages.nix
+    ../../modules/nixos/steam.nix
+  ];
 
   # Bootloader
   boot = {
@@ -25,11 +22,11 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    supportedFilesystems = [ "f2fs" ];
+    supportedFilesystems = ["f2fs"];
 
     # Kernel
     kernelPackages = pkgs.linuxPackages_cachyos;
-    kernelModules = [ "intel_vpu" ];
+    kernelModules = ["intel_vpu"];
   };
 
   # Networking
@@ -41,15 +38,25 @@
 
   # Monitor configuration
   system.monitors = [
-    { name = "eDP-1"; resolution = "1920x1200"; position = "0x0"; scale = "1"; }
-    { name = "DP-1"; resolution = "3840x2160"; position = "1920x0"; scale = "1"; }
+    {
+      name = "eDP-1";
+      resolution = "1920x1200";
+      position = "0x0";
+      scale = "1";
+    }
+    {
+      name = "DP-1";
+      resolution = "3840x2160";
+      position = "1920x0";
+      scale = "1";
+    }
   ];
 
   # User Account
   users.users.hmjn = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "video" "render" "docker" "input" ];
+    extraGroups = ["wheel" "video" "render" "docker" "input"];
     hashedPassword = "$6$Bh8Qjg9kNaQyaiUX$V5caBX7osT.52VhM2mKP45qr.EhjE.XbImwJqBwJFl5ZxSD9DxCxy2WggwiEfRHqZR3L0pnrdj1WMgxmrM6lZ1";
   };
 

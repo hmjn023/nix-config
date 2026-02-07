@@ -17,67 +17,79 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-latest, chaotic, home-manager, pre-commit-hooks, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs-latest = import nixpkgs-latest {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    in
-    {
-      formatter.${system} = pkgs-latest.nixfmt-rfc-style;
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-latest,
+    chaotic,
+    home-manager,
+    pre-commit-hooks,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+    pkgs-latest = import nixpkgs-latest {
+      inherit system;
+      config.allowUnfree = true;
+    };
+  in {
+    formatter.${system} = pkgs-latest.writeShellScriptBin "alejandra" ''
+      if [ $# -eq 0 ]; then
+        exec ${pkgs-latest.alejandra}/bin/alejandra .
+      else
+        exec ${pkgs-latest.alejandra}/bin/alejandra "$@"
+      fi
+    '';
 
-      checks.${system}.pre-commit-check = pre-commit-hooks.lib.${system}.run {
-        src = ./.;
-        hooks = {
-          nixpkgs-fmt.enable = true;
-          statix.enable = true;
-          deadnix.enable = true;
-        };
-      };
-
-      devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
-        inherit (self.checks.${system}.pre-commit-check) shellHook;
-        buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
-      };
-
-      nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/thinkpad/default.nix
-          { nixpkgs.overlays = [ chaotic.overlays.default ]; }
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = { inherit inputs pkgs-latest; };
-              users.hmjn = import ./hosts/thinkpad/home.nix;
-            };
-          }
-        ];
-      };
-
-      nixosConfigurations.desk-dell = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/desk-dell/default.nix
-          { nixpkgs.overlays = [ chaotic.overlays.default ]; }
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = { inherit inputs pkgs-latest; };
-              users.hmjn = import ./hosts/desk-dell/home.nix;
-            };
-          }
-        ];
+    checks.${system}.pre-commit-check = pre-commit-hooks.lib.${system}.run {
+      src = ./.;
+      hooks = {
+        nixpkgs-fmt.enable = true;
+        statix.enable = true;
+        deadnix.enable = true;
       };
     };
+
+    devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
+      inherit (self.checks.${system}.pre-commit-check) shellHook;
+      buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+    };
+
+    nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit inputs;};
+      modules = [
+        ./hosts/thinkpad/default.nix
+        {nixpkgs.overlays = [chaotic.overlays.default];}
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            extraSpecialArgs = {inherit inputs pkgs-latest;};
+            users.hmjn = import ./hosts/thinkpad/home.nix;
+          };
+        }
+      ];
+    };
+
+    nixosConfigurations.desk-dell = nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit inputs;};
+      modules = [
+        ./hosts/desk-dell/default.nix
+        {nixpkgs.overlays = [chaotic.overlays.default];}
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            extraSpecialArgs = {inherit inputs pkgs-latest;};
+            users.hmjn = import ./hosts/desk-dell/home.nix;
+          };
+        }
+      ];
+    };
+  };
 }

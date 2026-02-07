@@ -1,6 +1,8 @@
-{ pkgs, osConfig, ... }:
-
 {
+  pkgs,
+  osConfig,
+  ...
+}: {
   services.swayosd.enable = true;
 
   services.hyprpaper = {
@@ -19,9 +21,9 @@
   systemd.user.services.fetch-wallpaper = {
     Unit = {
       Description = "Fetch wallpaper if missing";
-      Before = [ "hyprpaper.service" ];
+      Before = ["hyprpaper.service"];
     };
-    Install.WantedBy = [ "graphical-session.target" ];
+    Install.WantedBy = ["graphical-session.target"];
     Service = {
       Type = "oneshot";
       ExecStart = "${pkgs.writeShellScript "fetch-paper" ''
@@ -40,7 +42,8 @@
 
     settings = {
       # Monitor config
-      monitor = map
+      monitor =
+        map
         (
           m: "${m.name},${m.resolution},${m.position},${m.scale}"
         )

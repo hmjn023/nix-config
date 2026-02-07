@@ -1,6 +1,4 @@
-_:
-
-{
+_: {
   programs.neovim = {
     enable = true;
     defaultEditor = true;

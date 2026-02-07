@@ -1,6 +1,4 @@
-_:
-
-{
+_: {
   programs.git = {
     enable = true;
     # userEmail = "your.email@example.com"; # Replace with your email

@@ -1,6 +1,8 @@
-{ lib, pkgs, ... }:
-
 {
+  lib,
+  pkgs,
+  ...
+}: {
   options.system.monitors = lib.mkOption {
     type = lib.types.listOf (lib.types.submodule {
       options = {
@@ -26,7 +28,14 @@
         };
       };
     });
-    default = [{ name = ""; resolution = "preferred"; position = "auto"; scale = "1"; }];
+    default = [
+      {
+        name = "";
+        resolution = "preferred";
+        position = "auto";
+        scale = "1";
+      }
+    ];
     description = "List of monitor configurations.";
   };
 
@@ -40,8 +49,8 @@
       substituters = [
         "https://chaotic-nyx.cachix.org/"
       ];
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "hmjn" ];
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" "hmjn"];
     };
 
     programs = {
@@ -98,13 +107,13 @@
 
     security.wrappers.btop = {
       source = "${pkgs.btop.overrideAttrs (_oldAttrs: {
-            src = pkgs.fetchFromGitHub {
-              owner = "deveworld";
-              repo = "btop";
-              rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
-              hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
-            };
-          })}/bin/btop";
+        src = pkgs.fetchFromGitHub {
+          owner = "deveworld";
+          repo = "btop";
+          rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
+          hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
+        };
+      })}/bin/btop";
       capabilities = "cap_perfmon=+ep";
       owner = "root";
       group = "root";
@@ -130,7 +139,7 @@
     services = {
       gvfs.enable = true;
       udisks2.enable = true;
-      udev.packages = [ pkgs.game-devices-udev-rules ];
+      udev.packages = [pkgs.game-devices-udev-rules];
     };
 
     virtualisation.docker.enable = true;
@@ -138,6 +147,6 @@
     # Controller support
     hardware.uinput.enable = true;
 
-    environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
+    environment.pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
   };
 }

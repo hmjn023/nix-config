@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -53,9 +55,9 @@
       export CHROME_EXECUTABLE=$(which google-chrome-stable)
       export PATH=$CARGO_HOME/bin:$PATH
       export PATH=$HOME/.bun/bin:$PATH
-      
+
       export MAKEFLAGS="-j $(nproc --all)"
-      
+
       # Key settings (terminfo based)
       typeset -g -A key
       key[Home]="''${terminfo[khome]}"
@@ -93,12 +95,12 @@
       fi
 
       bindkey "^I" menu-expand-or-complete
-      
+
       # Init tools
       eval "$(mcfly init zsh)"
       eval "$(zoxide init zsh)"
       eval "$(starship init zsh)"
-      
+
       # Broot
       if [ -f $HOME/.config/broot/launcher/bash/br ]; then
         source $HOME/.config/broot/launcher/bash/br

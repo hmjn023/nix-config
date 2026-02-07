@@ -1,6 +1,4 @@
-_:
-
-{
+_: {
   programs.mise = {
     enable = true;
     enableZshIntegration = true;

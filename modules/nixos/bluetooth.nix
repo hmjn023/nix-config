@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Bluetoothの有効化
   hardware.bluetooth = {
     enable = true;

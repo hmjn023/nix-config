@@ -1,6 +1,8 @@
-{ pkgs, pkgs-latest, ... }:
-
 {
+  pkgs,
+  pkgs-latest,
+  ...
+}: {
   home.packages = with pkgs; [
     # Applications (GUI)
     google-chrome

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # System-wide Packages
   environment.systemPackages = with pkgs; [
     # Core

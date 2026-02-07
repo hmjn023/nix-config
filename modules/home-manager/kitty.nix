@@ -1,6 +1,4 @@
-_:
-
-{
+_: {
   programs.kitty = {
     enable = true;
 

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Display Manager
   services = {
     displayManager.sddm = {

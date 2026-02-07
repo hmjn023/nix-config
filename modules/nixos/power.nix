@@ -1,6 +1,4 @@
-_:
-
-{
+_: {
   # 電力管理サービスの有効化
   services.tlp = {
     enable = true;

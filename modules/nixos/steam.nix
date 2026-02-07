@@ -1,6 +1,8 @@
-{ pkgs, inputs, ... }:
-
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   # System-wide Packages for Gaming
   environment.systemPackages = with pkgs; [
     steam-run
