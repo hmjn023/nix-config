@@ -10,10 +10,13 @@
 		../../modules/home-manager/gtk.nix
     ../../modules/home-manager/packages.nix
     ../../modules/home-manager/nvim.nix
+    ../../modules/home-manager/ssh.nix
+    ../../modules/home-manager/swaylock.nix
+    ../../modules/home-manager/ranger.nix
     ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/wezterm.nix
     ../../modules/home-manager/tmux.nix
-    ../../modules/home-manager/zzz.nix
+    ../../modules/home-manager/proton-wrapper.nix
   ];
 
   home.username = "hmjn";

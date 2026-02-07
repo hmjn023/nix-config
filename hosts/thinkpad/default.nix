@@ -4,6 +4,7 @@
   imports =
     [
       ./hardware-configuration.nix
+      ../../modules/nixos/hardware/thinkpad-fixes.nix
       ../../modules/nixos/sshd.nix
       ../../modules/nixos/i18n.nix
       ../../modules/nixos/sound.nix
@@ -12,6 +13,7 @@
       ../../modules/nixos/bluetooth.nix
       ../../modules/nixos/power.nix
       ../../modules/nixos/waydroid.nix
+			../../modules/nixos/network.nix
     ];
 
   # Bootloader
@@ -23,37 +25,31 @@
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   boot.kernelParams = [ "i915.force_probe=7d55" "i915.enable_guc=3" "nowatchdog" ];
   boot.kernelModules = [ "intel_vpu" ];
-  # chaotic.scx.enable = true;
-
-  # Fix high CPU usage caused by ACPI interrupt storm (gpe6D)
-  # Disable on boot
-  systemd.services.disable-gpe6d = {
-    description = "Disable GPE 6D to prevent high CPU usage";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.runtimeShell} -c 'echo disable > /sys/firmware/acpi/interrupts/gpe6D'";
-      # Ignore errors if already disabled
-      SuccessExitStatus = "0 1"; 
-    };
-  };
-  
-  # Disable on resume from suspend/hibernate
-  powerManagement.resumeCommands = ''
-    echo disable > /sys/firmware/acpi/interrupts/gpe6D
-  '';
 
   # Networking
   networking.hostName = "thinkpad";
   networking.wireless.iwd.enable = true;
   networking.useDHCP = true;
 
-  # Trackpoint Scroll & Sensitivity
-  services.udev.extraRules = ''
-    ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="TPPS/2 Synaptics TrackPoint", ENV{LIBINPUT_SCROLL_METHOD}="button", ENV{LIBINPUT_SCROLL_BUTTON}="274", ENV{LIBINPUT_CONFIG_ACCEL_SPEED}="-0.5", ENV{LIBINPUT_SCROLL_PIXEL_DISTANCE}="50"
-  '';
+  # Display Manager
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = false;
+    package = pkgs.kdePackages.sddm;
+    theme = "breeze";
+    settings = {
+      General = {
+        InputMethod = "";
+      };
+    };
+  };
 
+  # XKB settings
+  services.xserver.enable = true;
+  services.xserver.xkb.layout = "jp";
 
+  # Enable Hyprland system-wide for SDDM session detection
+  programs.hyprland.enable = true;
 
   # User Account
   users.users.hmjn = {
@@ -75,6 +71,12 @@
     # System Utils
     wget
     curl
+    usbutils
+
+    # SDDM Theme & Assets
+    kdePackages.sddm
+    kdePackages.breeze
+    kdePackages.plasma-workspace
   ];
 
   system.stateVersion = "25.11";

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, pkgs-latest, ... }:
 
 {
   home.packages = with pkgs; [
@@ -6,7 +6,7 @@
     google-chrome
     discord
     kdePackages.dolphin
-		antigravity
+		pkgs-latest.antigravity
 		vscode
 		steam
 		vivaldi
@@ -22,7 +22,6 @@
     starship
     zoxide
     mcfly
-    sheldon
     bat
     ripgrep
     fd

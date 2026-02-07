@@ -16,6 +16,23 @@
     };
   };
 
+  systemd.user.services.fetch-wallpaper = {
+    Unit = {
+      Description = "Fetch wallpaper if missing";
+      Before = [ "hyprpaper.service" ];
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "fetch-paper" ''
+        if [ ! -f "$HOME/Pictures/paper.jpg" ]; then
+          mkdir -p "$HOME/Pictures"
+          ${pkgs.curl}/bin/curl -L "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png" -o "$HOME/Pictures/paper.jpg"
+        fi
+      ''}";
+    };
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.hyprland;
@@ -212,7 +229,6 @@
   home.packages = with pkgs; [
     hyprpaper
     swayidle
-    swaylock
     swayosd
     wl-clipboard
     grim
