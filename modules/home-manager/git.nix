@@ -1,8 +1,12 @@
 _: {
   programs.git = {
     enable = true;
-    userEmail = "hmjn023@gmail.com";
-    userName = "hmjn";
+    settings = {
+      user = {
+        email = "hmjn023@gmail.com";
+        name = "hmjn";
+      };
+    };
   };
 
   programs.delta = {
