@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos/f2fs.nix
     ../../modules/nixos/sshd.nix
     ../../modules/nixos/i18n.nix
     ../../modules/nixos/sound.nix

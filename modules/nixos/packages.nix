@@ -43,6 +43,7 @@
     kdePackages.kde-cli-tools
     kdePackages.plasma-pa # Audio settings
     kdePackages.bluedevil # Bluetooth settings
+    kdePackages.bluez-qt # Bluetooth QML module
     kdePackages.kirigami-addons
     kdePackages.qqc2-desktop-style
   ];

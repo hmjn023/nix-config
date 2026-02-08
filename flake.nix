@@ -31,6 +31,7 @@
       system = "${system}";
       config.allowUnfree = true;
     };
+    compressExtensions = import ./modules/nixos/f2fs-extensions.nix;
   in {
     formatter.${system} = pkgs-latest.writeShellScriptBin "alejandra" ''
       if [ $# -eq 0 ]; then
@@ -49,13 +50,14 @@
       };
     };
 
-    devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
-      inherit (self.checks.${system}.pre-commit-check) shellHook;
-      buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+    devShells.${system} = import ./nix/devshell.nix {
+      inherit (nixpkgs.legacyPackages.${system}) pkgs;
+      inherit (self.checks.${system}) pre-commit-check;
+      inherit compressExtensions;
     };
 
     nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs compressExtensions;};
       modules = [
         ./hosts/thinkpad/default.nix
         {nixpkgs.overlays = [chaotic.overlays.default];}
@@ -66,7 +68,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs pkgs-latest;};
+            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
             users.hmjn = import ./hosts/thinkpad/home.nix;
           };
         }
@@ -74,7 +76,7 @@
     };
 
     nixosConfigurations.desk-dell = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs compressExtensions;};
       modules = [
         ./hosts/desk-dell/default.nix
         {nixpkgs.overlays = [chaotic.overlays.default];}
@@ -85,7 +87,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs pkgs-latest;};
+            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
             users.hmjn = import ./hosts/desk-dell/home.nix;
           };
         }

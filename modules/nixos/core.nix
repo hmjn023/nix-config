@@ -109,10 +109,19 @@
       sessionVariables = {
         # Fix KDE app integration
         XDG_DATA_DIRS = [
+          "/run/current-system/sw/share"
           "${pkgs.kdePackages.systemsettings}/share"
           "${pkgs.kdePackages.plasma-pa}/share"
           "${pkgs.kdePackages.bluedevil}/share"
+          "${pkgs.kdePackages.bluez-qt}/share"
           "${pkgs.kdePackages.kirigami-addons}/share"
+        ];
+        QML2_IMPORT_PATH = [
+          "/run/current-system/sw/lib/qt-6/qml"
+          "${pkgs.kdePackages.plasma-pa}/lib/qt-6/qml"
+          "${pkgs.kdePackages.bluedevil}/lib/qt-6/qml"
+          "${pkgs.kdePackages.bluez-qt}/lib/qt-6/qml"
+          "${pkgs.kdePackages.kirigami-addons}/lib/qt-6/qml"
         ];
       };
 

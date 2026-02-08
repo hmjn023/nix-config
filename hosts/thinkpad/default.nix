@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos/f2fs.nix
     ../../modules/nixos/sshd.nix
     ../../modules/nixos/i18n.nix
     ../../modules/nixos/sound.nix
@@ -22,7 +23,6 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    supportedFilesystems = ["f2fs"];
 
     # Kernel
     kernelPackages = pkgs.linuxPackages_cachyos;
