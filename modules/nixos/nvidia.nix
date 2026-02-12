@@ -24,16 +24,16 @@
   };
 
   environment.systemPackages = with pkgs; [
-    cudaPackages_13.cudatoolkit
-    cudaPackages_13.cudnn
-    cudaPackages_13.libcusparse_lt
-    cudaPackages_13.nccl
-    cudaPackages_13.libnvshmem
-    cudaPackages_13.libcublas
-    cudaPackages_13.libcufft
-    cudaPackages_13.libcurand
-    cudaPackages_13.libcusolver
-    cudaPackages_13.libcusparse
+    cudaPackages.cudatoolkit
+    cudaPackages.cudnn
+    cudaPackages.libcusparse_lt
+    cudaPackages.nccl
+    cudaPackages.libnvshmem
+    cudaPackages.libcublas
+    cudaPackages.libcufft
+    cudaPackages.libcurand
+    cudaPackages.libcusolver
+    cudaPackages.libcusparse
     nvtopPackages.nvidia
     pciutils
     nvidia-vaapi-driver
@@ -55,9 +55,9 @@
     NIXOS_OZONE_WL = "1";
 
     # CUDA environment variables
-    CUDA_PATH = "${pkgs.cudaPackages_13.cudatoolkit}";
+    CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
     LD_LIBRARY_PATH = let
-      cudaLibs = with pkgs.cudaPackages_13; [
+      cudaLibs = with pkgs.cudaPackages; [
         cudatoolkit
         cudnn.lib
         libcusparse_lt
@@ -72,7 +72,7 @@
     in "/run/opengl-driver/lib:${config.hardware.nvidia.package}/lib:" + (pkgs.lib.makeLibraryPath cudaLibs);
   };
 
-  programs.nix-ld.libraries = with pkgs.cudaPackages_13; [
+  programs.nix-ld.libraries = with pkgs.cudaPackages; [
     cudatoolkit
     cudnn.lib
     libcusparse_lt
