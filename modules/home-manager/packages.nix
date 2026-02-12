@@ -6,7 +6,8 @@
   home.packages = with pkgs; [
     # Applications (GUI)
     google-chrome
-    discord
+    pkgs-latest.discord-canary
+    pkgs-latest.vesktop
     kdePackages.dolphin
     pkgs-latest.antigravity
     vscode

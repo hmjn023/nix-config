@@ -105,6 +105,9 @@
       if [ -f $HOME/.config/broot/launcher/bash/br ]; then
         source $HOME/.config/broot/launcher/bash/br
       fi
+
+      # Unset SSH_ASKPASS to prevent annoying GUI prompts
+      unset SSH_ASKPASS
     '';
 
     # Sheldon plugins
@@ -124,7 +127,7 @@
           owner = "azu";
           repo = "ni.zsh";
           rev = "master"; # Pin commit
-          sha256 = "sha256-+yfOKFv4YUuuHm3UWzYTgeZVUjrD22YxFWfuPvMZpzs="; # Placeholder
+          sha256 = "sha256-imYyRg2/N7rguEDHyqPRUw4n9lZFpAnfMQrfgTGszZk="; # Updated hash
         };
       }
     ];

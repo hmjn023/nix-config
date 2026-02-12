@@ -7,6 +7,7 @@
     wget
     curl
     usbutils
+    v4l-utils
     tree
 
     # CLI Tools

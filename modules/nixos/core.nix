@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }: {
   options.system.monitors = lib.mkOption {
@@ -80,7 +81,9 @@
           xorg.libXrandr
           xorg.libXcursor
           xorg.libXtst
+          xorg.libxcb
           alsa-lib
+          libpulseaudio
           nspr
           dbus
           at-spi2-atk
@@ -90,21 +93,27 @@
           mesa
           libxkbcommon
           wayland
+          libv4l
+          libsecret
+          libnotify
+          libva
         ];
       };
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        (btop.overrideAttrs (_oldAttrs: {
-          src = fetchFromGitHub {
-            owner = "deveworld";
-            repo = "btop";
-            rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
-            hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
-          };
-        }))
-      ];
+    environment = let
+      btop-dev = pkgs.btop.overrideAttrs (_oldAttrs: {
+        src = pkgs.fetchFromGitHub {
+          owner = "deveworld";
+          repo = "btop";
+          rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
+          hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
+        };
+      });
+    in {
+      systemPackages = with pkgs;
+        lib.optionals (config.networking.hostName == "thinkpad") [btop-dev]
+        ++ lib.optionals (config.networking.hostName != "thinkpad") [btop];
 
       sessionVariables = {
         # Fix KDE app integration
@@ -123,24 +132,42 @@
           "${pkgs.kdePackages.bluez-qt}/lib/qt-6/qml"
           "${pkgs.kdePackages.kirigami-addons}/lib/qt-6/qml"
         ];
+        NIXOS_OZONE_WL = "1";
+        ELECTRON_OZONE_PLATFORM_HINT = "auto";
+        MOZ_ENABLE_WAYLAND = "1"; # For Firefox/Librewolf if used
+        GDK_BACKEND = "wayland,x11";
+        SDL_VIDEODRIVER = "wayland";
+        CLUTTER_BACKEND = "wayland";
       };
 
       pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
     };
 
-    security.wrappers.btop = {
-      source = "${pkgs.btop.overrideAttrs (_oldAttrs: {
+    xdg.portal = {
+      enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-hyprland
+        pkgs.xdg-desktop-portal-gtk
+      ];
+      config.common.default = ["hyprland" "gtk"];
+    };
+
+    security.wrappers.btop = let
+      btop-dev = pkgs.btop.overrideAttrs (_oldAttrs: {
         src = pkgs.fetchFromGitHub {
           owner = "deveworld";
           repo = "btop";
           rev = "8fb739059f5a31dfa5cd3f78b724ff5b16a0a379";
           hash = "sha256-k9HJc36QC436wnbj2qL/rK+CzYEsZIzi+XU/3hZy0oE=";
         };
-      })}/bin/btop";
-      capabilities = "cap_perfmon=+ep";
-      owner = "root";
-      group = "root";
-    };
+      });
+    in
+      lib.mkIf (config.networking.hostName == "thinkpad") {
+        source = "${btop-dev}/bin/btop";
+        capabilities = "cap_perfmon=+ep";
+        owner = "root";
+        group = "root";
+      };
 
     hardware.graphics = {
       enable = true;

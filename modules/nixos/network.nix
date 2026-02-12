@@ -7,5 +7,7 @@ _: {
 
   networking.nameservers = [
     "192.168.1.150"
+    "1.1.1.1" # Cloudflare DNS
+    "8.8.8.8" # Google DNS
   ];
 }

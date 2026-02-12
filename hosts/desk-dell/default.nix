@@ -37,7 +37,7 @@
   # Monitor configuration (Example for Desktop)
   system.monitors = [
     {
-      name = "DP-1";
+      name = "DP-5";
       resolution = "3840x2160";
       position = "0x0";
       scale = "1";

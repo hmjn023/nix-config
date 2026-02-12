@@ -62,13 +62,14 @@
       };
 
       exec-once = [
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "mako"
         "waybar"
         "fcitx5"
-        "xwaylandvideobridge"
         "[workspace 1 silent] wezterm"
         "[workspace 2 silent] google-chrome-stable"
-        "[workspace 9 silent] discord"
+        "[workspace 9 silent] discord-canary"
         "[workspace 10 silent] kitty btop"
       ];
 
@@ -217,17 +218,17 @@
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      gesture = [
-        "3, horizontal, workspace"
-      ];
-    };
-
-    extraConfig = ''
-      device {
-        name = elan0676:00-04f3:3195-touchpad
-        sensitivity = 0
-      }
-    '';
+            gesture = [
+              "3, horizontal, workspace"
+            ];
+          };
+                  extraConfig = ''
+              device {
+                name = elan0676:00-04f3:3195-touchpad
+                sensitivity = 0
+              }
+            '';
+        
   };
 
   # Dependencies for the config
