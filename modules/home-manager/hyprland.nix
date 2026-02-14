@@ -65,7 +65,6 @@
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "mako"
-        "waybar"
         "fcitx5"
         "[workspace 1 silent] wezterm"
         "[workspace 2 silent] google-chrome-stable"
@@ -239,7 +238,6 @@
     grim
     slurp
     wofi
-    waybar
     mako
     tesseract
   ];
