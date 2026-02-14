@@ -43,15 +43,23 @@
   config = {
     nixpkgs.config.allowUnfree = true;
 
-    nix.settings = {
-      max-substitution-jobs = 8;
-      http-connections = 50;
-      connect-timeout = 5;
-      substituters = [
-        "https://chaotic-nyx.cachix.org/"
-      ];
-      experimental-features = ["nix-command" "flakes"];
-      trusted-users = ["root" "hmjn"];
+    nix = {
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 7d";
+      };
+      settings = {
+        auto-optimise-store = true;
+        max-substitution-jobs = 8;
+        http-connections = 50;
+        connect-timeout = 5;
+        substituters = [
+          "https://chaotic-nyx.cachix.org/"
+        ];
+        experimental-features = ["nix-command" "flakes"];
+        trusted-users = ["root" "hmjn"];
+      };
     };
 
     programs = {

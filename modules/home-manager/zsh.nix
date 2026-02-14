@@ -29,34 +29,51 @@
 
     # Session variables
     sessionVariables = {
-      HISTFILE = "${config.home.homeDirectory}/.history";
-      HISTSIZE = "100000";
-      SAVEHIST = "100000";
-      # PATH modifications are handled better via home.sessionPath usually, but keeping some here if tricky
       GOPATH = "${config.home.homeDirectory}/go";
       ANDROID_HOME = "${config.home.homeDirectory}/Android/Sdk";
       NDK_HOME = "${config.home.homeDirectory}/Android/Sdk/ndk/26.3.11579264";
       CARGO_HOME = "${config.home.homeDirectory}/.cargo";
       VISUAL = "nvim";
       EDITOR = "nvim";
-      BROWSER = "/usr/bin/google-chrome-stable";
       VCPKG_ROOT = "/opt/vcpkg";
       VCPKG_DOWNLOADS = "/var/cache/vcpkg";
+      MAKEFLAGS = "-j$(nproc --all)";
     };
 
-    # Init Content (was initExtra)
-    initContent = ''
-      # PATH exports
-      export PATH=/var/lib/snapd/snap/bin:$PATH
-      export PATH=$HOME/.local/bin:$PATH
-      export PATH=$HOME/Android/Sdk/platform-tools:$PATH
-      export PATH=$HOME/flutter/bin:$PATH
-      export PATH=$GOPATH/bin:$PATH
-      export CHROME_EXECUTABLE=$(which google-chrome-stable)
-      export PATH=$CARGO_HOME/bin:$PATH
-      export PATH=$HOME/.bun/bin:$PATH
+    # Environment variables (loaded first in .zshenv)
+    envExtra = ''
+      # Skip WezTerm's heavy automatic shell integration
+      export WEZTERM_SHELL_SKIP_ALL=1
+    '';
 
-      export MAKEFLAGS="-j $(nproc --all)"
+    # Extra initialization
+    initExtra = ''
+      # PATH exports
+      export PATH=$HOME/.local/bin:$HOME/Android/Sdk/platform-tools:$HOME/flutter/bin:$GOPATH/bin:$CARGO_HOME/bin:$HOME/.bun/bin:/var/lib/snapd/snap/bin:$PATH
+
+      # uv completion
+      if command -v uv &> /dev/null; then
+        eval "$(uv generate-shell-completion zsh)"
+      fi
+
+      # bun completion
+      if [ -s "$HOME/.bun/_bun" ]; then
+        source "$HOME/.bun/_bun"
+      fi
+
+      # npm completion
+      if command -v npm &> /dev/null; then
+        eval "$(npm completion)"
+      fi
+
+      # Lightweight WezTerm directory tracking (OSC 7)
+      if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
+        function wezterm_osc7_precmd() {
+          printf "\033]7;file://%s%s\033\\" "$HOST" "$PWD"
+        }
+        autoload -Uz add-zsh-hook
+        add-zsh-hook precmd wezterm_osc7_precmd
+      fi
 
       # Key settings (terminfo based)
       typeset -g -A key
@@ -96,11 +113,6 @@
 
       bindkey "^I" menu-expand-or-complete
 
-      # Init tools
-      eval "$(mcfly init zsh)"
-      eval "$(zoxide init zsh)"
-      eval "$(starship init zsh)"
-
       # Broot
       if [ -f $HOME/.config/broot/launcher/bash/br ]; then
         source $HOME/.config/broot/launcher/bash/br
@@ -110,15 +122,15 @@
       unset SSH_ASKPASS
     '';
 
-    # Sheldon plugins
+    # Plugins
     plugins = [
       {
         name = "zsh-romaji-complete";
         src = pkgs.fetchFromGitHub {
           owner = "aoyama-val";
           repo = "zsh-romaji-complete";
-          rev = "master"; # Pin commit if preferred
-          sha256 = "sha256-mgZGOSDFSvOfb8VRvnE58mGGkLj6y1GN12t2q6VDE7g="; # Placeholder, will fail first run if wrong
+          rev = "master";
+          sha256 = "sha256-mgZGOSDFSvOfb8VRvnE58mGGkLj6y1GN12t2q6VDE7g=";
         };
       }
       {
@@ -126,10 +138,29 @@
         src = pkgs.fetchFromGitHub {
           owner = "azu";
           repo = "ni.zsh";
-          rev = "master"; # Pin commit
-          sha256 = "sha256-imYyRg2/N7rguEDHyqPRUw4n9lZFpAnfMQrfgTGszZk="; # Updated hash
+          rev = "master";
+          sha256 = "sha256-imYyRg2/N7rguEDHyqPRUw4n9lZFpAnfMQrfgTGszZk=";
         };
       }
     ];
+  };
+
+  # Optimized initialization for CLI tools
+  programs = {
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    mcfly = {
+      enable = true;
+      enableZshIntegration = true;
+      keyScheme = "emacs";
+    };
   };
 }

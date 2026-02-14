@@ -218,17 +218,16 @@
         "$mainMod, mouse:273, resizewindow"
       ];
 
-            gesture = [
-              "3, horizontal, workspace"
-            ];
-          };
-                  extraConfig = ''
-              device {
-                name = elan0676:00-04f3:3195-touchpad
-                sensitivity = 0
-              }
-            '';
-        
+      gesture = [
+        "3, horizontal, workspace"
+      ];
+    };
+    extraConfig = ''
+      device {
+        name = elan0676:00-04f3:3195-touchpad
+        sensitivity = 0
+      }
+    '';
   };
 
   # Dependencies for the config

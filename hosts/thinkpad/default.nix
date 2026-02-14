@@ -26,7 +26,16 @@
 
     # Kernel
     kernelPackages = pkgs.linuxPackages_cachyos;
-    kernelModules = ["intel_vpu"];
+    kernelModules = ["intel_vpu" "acpi_call" "thinkpad_acpi"];
+    extraModulePackages = with pkgs.linuxPackages_cachyos; [acpi_call];
+    kernelParams = [
+      "acpi_mask_gpe=0x6D,0x6E"
+      # Modern Standby (S0ix) optimizations
+      "i915.enable_guc=3" # Enable GuC/HuC for better GPU power management
+      "i915.enable_dc=4" # Enable deeper Display Power C-states
+      "nvme.noacpi=1" # Sometimes helps NVMe reach deeper sleep states
+      "pcie_aspm=force" # Force Active State Power Management
+    ];
   };
 
   # Networking

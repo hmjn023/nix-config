@@ -1,14 +1,12 @@
 {pkgs, ...}: {
   programs.git = {
     enable = true;
-    extraConfig = {
-      credential.helper = "${pkgs.gh}/bin/gh auth git-credential";
-    };
     settings = {
       user = {
         email = "hmjn023@gmail.com";
         name = "hmjn";
       };
+      credential.helper = "${pkgs.gh}/bin/gh auth git-credential";
     };
   };
 
