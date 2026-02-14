@@ -64,6 +64,7 @@
 
     programs = {
       zsh.enable = true;
+      dconf.enable = true;
       nix-ld = {
         enable = true;
         libraries = with pkgs; [
@@ -79,17 +80,17 @@
           glib
           libGL
           libglvnd
-          xorg.libX11
-          xorg.libXext
-          xorg.libXrender
-          xorg.libXi
-          xorg.libXcomposite
-          xorg.libXdamage
-          xorg.libXfixes
-          xorg.libXrandr
-          xorg.libXcursor
-          xorg.libXtst
-          xorg.libxcb
+          libX11
+          libXext
+          libXrender
+          libXi
+          libXcomposite
+          libXdamage
+          libXfixes
+          libXrandr
+          libXcursor
+          libXtst
+          libxcb
           alsa-lib
           libpulseaudio
           nspr
@@ -124,21 +125,21 @@
         ++ lib.optionals (config.networking.hostName != "thinkpad") [btop];
 
       sessionVariables = {
+        # nix-ld
+        NIX_LD_LIBRARY_PATH = lib.mkForce (lib.makeLibraryPath config.programs.nix-ld.libraries);
+        NIX_LD = lib.mkForce "${pkgs.glibc}/lib/ld-linux-x86-64.so.2";
+
         # Fix KDE app integration
         XDG_DATA_DIRS = [
+          "$HOME/.local/share"
+          "$HOME/.nix-profile/share"
           "/run/current-system/sw/share"
-          "${pkgs.kdePackages.systemsettings}/share"
-          "${pkgs.kdePackages.plasma-pa}/share"
-          "${pkgs.kdePackages.bluedevil}/share"
-          "${pkgs.kdePackages.bluez-qt}/share"
-          "${pkgs.kdePackages.kirigami-addons}/share"
         ];
         QML2_IMPORT_PATH = [
+          "$HOME/.nix-profile/lib/qt-6/qml"
           "/run/current-system/sw/lib/qt-6/qml"
-          "${pkgs.kdePackages.plasma-pa}/lib/qt-6/qml"
-          "${pkgs.kdePackages.bluedevil}/lib/qt-6/qml"
-          "${pkgs.kdePackages.bluez-qt}/lib/qt-6/qml"
-          "${pkgs.kdePackages.kirigami-addons}/lib/qt-6/qml"
+          "$HOME/.nix-profile/lib/qt-5/qml"
+          "/run/current-system/sw/lib/qt-5/qml"
         ];
         NIXOS_OZONE_WL = "1";
         ELECTRON_OZONE_PLATFORM_HINT = "auto";

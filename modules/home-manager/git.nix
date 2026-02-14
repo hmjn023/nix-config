@@ -2,6 +2,7 @@
   programs.git = {
     enable = true;
     settings = {
+      credential.helper = "${pkgs.gh}/bin/gh auth git-credential";
       user = {
         email = "hmjn023@gmail.com";
         name = "hmjn";

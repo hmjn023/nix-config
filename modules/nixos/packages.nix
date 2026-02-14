@@ -13,6 +13,7 @@
     # CLI Tools
     f2fs-tools
     xdg-utils
+    shared-mime-info
     lsd
     starship
     zoxide

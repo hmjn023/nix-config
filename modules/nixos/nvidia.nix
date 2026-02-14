@@ -70,7 +70,7 @@
         libcusparse
       ];
     in
-      "/run/opengl-driver/lib:${config.hardware.nvidia.package}/lib:" + (pkgs.lib.makeLibraryPath cudaLibs);
+      "/run/opengl-driver/lib:${config.hardware.nvidia.package}/lib:${pkgs.stdenv.cc.cc.lib}/lib:" + (pkgs.lib.makeLibraryPath cudaLibs);
   };
 
   programs.nix-ld.libraries = with pkgs.cudaPackages; [
