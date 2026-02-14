@@ -155,6 +155,8 @@
         "$mainModShift, W, exec, $HOME/side.sh"
 
         # Screenshot / OCR
+        "CTRL, Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
+        ", Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
         "$mainModShift, S, exec, grim -g \"$(slurp)\" -|wl-copy"
         "$mainMod, O, exec, grim -g \"$(slurp)\" -|tesseract -l eng stdin stdout |sed \"s/ //g\" |wl-copy"
         "$mainModShift, O, exec, grim -g \"$(slurp)\" -|tesseract -l jpn+eng stdin stdout |sed \"s/ //g\" |wl-copy"
@@ -237,6 +239,7 @@
     wl-clipboard
     grim
     slurp
+    libnotify
     wofi
     mako
     tesseract
