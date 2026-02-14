@@ -17,7 +17,18 @@ in {
   # Standard development shell
   default = pkgs.mkShell {
     inherit (pre-commit-check) shellHook;
-    buildInputs = pre-commit-check.enabledPackages;
+    buildInputs = pre-commit-check.enabledPackages ++ [
+      (pkgs.writeShellScriptBin "rebuild" ''
+        HOST=$(hostname)
+        echo "Detected host: $HOST"
+        if [ -e "./hosts/$HOST" ]; then
+          sudo nixos-rebuild switch --flake ".#$HOST" "$@"
+        else
+          echo "Error: Configuration for host '$HOST' not found in ./hosts/"
+          exit 1
+        fi
+      '')
+    ];
     env = {
       NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [
         stdenv.cc.cc.lib

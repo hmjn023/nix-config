@@ -10,4 +10,10 @@ _: {
     "1.1.1.1" # Cloudflare DNS
     "8.8.8.8" # Google DNS
   ];
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 3000 8000 53317 ];
+    allowedUDPPorts = [ 53317 ];
+  };
 }
