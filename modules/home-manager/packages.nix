@@ -14,6 +14,8 @@
     kdePackages.kdegraphics-thumbnailers
     kdePackages.kimageformats
     kdePackages.ffmpegthumbs
+		kdePackages.qtsvg
+		kdePackages.kservice
     pkgs-latest.antigravity
     vscode
     vivaldi
@@ -27,4 +29,5 @@
 
     gemini-cli
   ];
+	xdg.configFile."menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 }
