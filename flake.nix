@@ -75,22 +75,15 @@
       ];
     };
 
-    nixosConfigurations.desk-dell = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs compressExtensions;};
+    homeConfigurations.desk-dell = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [chaotic.overlays.default];
+        config.allowUnfree = true;
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
       modules = [
-        ./hosts/desk-dell/default.nix
-        {nixpkgs.overlays = [chaotic.overlays.default];}
-
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
-            users.hmjn = import ./hosts/desk-dell/home.nix;
-          };
-        }
+        ./hosts/desk-dell/home.nix
       ];
     };
   };

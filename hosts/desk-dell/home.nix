@@ -24,5 +24,7 @@
     stateVersion = "24.11";
   };
 
+  targets.genericLinux.enable = true;
+
   programs.home-manager.enable = true;
 }
