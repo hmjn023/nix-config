@@ -9,6 +9,7 @@
     usbutils
     v4l-utils
     tree
+    libcdio
 
     # CLI Tools
     f2fs-tools

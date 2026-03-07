@@ -54,7 +54,7 @@
   users.users.hmjn = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = ["wheel" "video" "render" "docker" "input"];
+    extraGroups = ["wheel" "video" "render" "docker" "input" "cdrom"];
     hashedPassword = "$6$Bh8Qjg9kNaQyaiUX$V5caBX7osT.52VhM2mKP45qr.EhjE.XbImwJqBwJFl5ZxSD9DxCxy2WggwiEfRHqZR3L0pnrdj1WMgxmrM6lZ1";
   };
 

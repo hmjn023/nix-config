@@ -20,6 +20,7 @@
     vscode
     vivaldi
     localsend
+    vlc
 
     # Minecraft & Java (GraalVM)
     prismlauncher
