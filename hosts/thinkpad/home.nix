@@ -26,10 +26,6 @@
   # 共通のCLIパッケージなどはここで管理
   home.packages = with pkgs; [
     gemini-cli
-    wl-clipboard
-    libnotify
-    grim
-    slurp
     kakasi
   ];
 
