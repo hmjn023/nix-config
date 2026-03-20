@@ -5,20 +5,8 @@
   ...
 }: {
   home.packages = with pkgs; [
-    # Applications (GUI)
-    google-chrome
-    pkgs-latest.discord-canary
-    pkgs-latest.vesktop
-    kdePackages.dolphin
-    kdePackages.kio-extras
-    kdePackages.kdegraphics-thumbnailers
-    kdePackages.kimageformats
-    kdePackages.ffmpegthumbs
-		kdePackages.qtsvg
-		kdePackages.kservice
+    # Applications (GUI) - Managed by paru or Nix
     pkgs-latest.antigravity
-    vscode
-    vivaldi
     localsend
     vlc
 
@@ -30,5 +18,5 @@
 
     gemini-cli
   ];
-	xdg.configFile."menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+  xdg.configFile."menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 }
