@@ -56,6 +56,18 @@
       inherit compressExtensions;
     };
 
+    homeConfigurations.hmjn = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [chaotic.overlays.default];
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest;};
+      modules = [
+        ./hosts/thinkpad/home.nix
+      ];
+    };
+
     nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs compressExtensions;};
       modules = [

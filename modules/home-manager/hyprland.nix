@@ -1,65 +1,22 @@
-{
-  pkgs,
-  osConfig,
-  ...
-}: {
+{pkgs, ...}: {
+  # Services (Config only)
   services.swayosd.enable = true;
-
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      preload = [
-        "~/Pictures/paper.jpg"
-      ];
-      wallpaper = [
-        "DP-3,~/Pictures/paper.jpg"
-        "HDMI-A-2,~/Pictures/paper.jpg"
-      ];
-    };
-  };
-
-  systemd.user.services.fetch-wallpaper = {
-    Unit = {
-      Description = "Fetch wallpaper if missing";
-      Before = ["hyprpaper.service"];
-    };
-    Install.WantedBy = ["graphical-session.target"];
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScript "fetch-paper" ''
-        if [ ! -f "$HOME/Pictures/paper.jpg" ]; then
-          mkdir -p "$HOME/Pictures"
-          ${pkgs.curl}/bin/curl -L "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png" -o "$HOME/Pictures/paper.jpg"
-        fi
-      ''}";
-    };
-  };
+  services.hyprpaper.enable = true;
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.hyprland;
+    package = null;
     xwayland.enable = true;
 
     settings = {
-      # Monitor config
-      monitor =
-        map
-        (
-          m: "${m.name},${m.resolution},${m.position},${m.scale}"
-        )
-        osConfig.system.monitors;
-
-      # Environment variables
+      monitor = [",highres,auto,1"];
       env = [
         "XCURSOR_SIZE,24"
         "GTK_IM_MODULE,fcitx"
         "QT_IM_MODULE,fcitx"
         "XMODIFIERS,@im=fcitx"
       ];
-
-      cursor = {
-        no_hardware_cursors = true;
-      };
+      cursor.no_hardware_cursors = true;
 
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
@@ -75,12 +32,27 @@
       input = {
         kb_layout = "jp";
         follow_mouse = 1;
-        touchpad = {
-          natural_scroll = "no";
-        };
+        touchpad.natural_scroll = "no";
         sensitivity = -0.5;
       };
 
+      device = [
+        {
+          name = "elan0676:00-04f3:3195-mouse";
+          sensitivity = -0.8;
+          scroll_factor = 0.5;
+        }
+        {
+          name = "elan0676:00-04f3:3195-touchpad";
+          sensitivity = -0.8;
+          scroll_factor = 0.5;
+        }
+        {
+          name = "tpps/2-synaptics-trackpoint";
+          sensitivity = -0.8;
+          scroll_factor = 0.5;
+        }
+      ];
       general = {
         gaps_in = 2;
         gaps_out = 10;
@@ -88,9 +60,7 @@
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
-        allow_tearing = false;
       };
-
       decoration = {
         rounding = 10;
         blur = {
@@ -124,47 +94,38 @@
       };
 
       "$mainMod" = "SUPER";
-
       bind = [
-        # Audio
-        ",XF86AudioRaiseVolume,exec,swayosd-client --output-volume raise"
-        ",XF86AudioLowerVolume,exec,swayosd-client --output-volume lower"
-        ",XF86AudioMute,exec,swayosd-client --output-volume mute-toggle"
-        ",XF86AudioMicMute,exec,swayosd-client --input-volume mute-toggle"
-
-        # Brightness
-        ", XF86MonBrightnessUp,exec,swayosd-client --brightness raise"
-        ", XF86MonBrightnessDown,exec,swayosd-client --brightness lower"
-
-        # Apps
+        # Applications
         "$mainMod, T, exec, kitty"
         "$mainMod, Return, exec, wezterm"
         "$mainMod, E, exec, dolphin"
         "$mainMod, D, exec, wofi --show drun -I"
-        "$mainModShift, T, exec, kitty iwctl"
         "CTRLSHIFT, Escape, exec, kitty btop"
-
-        # Window management
-        "$mainModSHIFT, Q, killactive,"
-        "$mainModSHIFT, E, exit,"
-        "$mainModShift, Space, togglefloating,"
-        "$mainMod, F, fullscreen"
-
-        # Scripts
+        "$mainModShift, T, exec, kitty iwctl"
         "$mainMod, W, exec, $HOME/eww.sh"
         "$mainModShift, W, exec, $HOME/side.sh"
 
-        # Screenshot / OCR
-        "CTRL, Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
-        ", Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
-        "$mainModShift, S, exec, grim -g \"$(slurp)\" -|wl-copy"
-        "$mainMod, O, exec, grim -g \"$(slurp)\" -|tesseract -l eng stdin stdout |sed \"s/ //g\" |wl-copy"
-        "$mainModShift, O, exec, grim -g \"$(slurp)\" -|tesseract -l jpn+eng stdin stdout |sed \"s/ //g\" |wl-copy"
-
-        # Lock / Reload
+        # System
+        "$mainModShift, Q, killactive,"
+        "$mainModShift, E, exit,"
+        "$mainModShift, Space, togglefloating,"
+        "$mainMod, F, fullscreen"
         "$mainModShift, L, exec, swaylock -f --font \"Noto Sans Mono CJK JP\" -C ~/.config/swaylock/config"
-        "$mainModShift,N,exec ,swaync-client -t -sw"
-        "$mainModShift,R,exec,hyprctl reload"
+        "$mainModShift, N, exec, swaync-client -t -sw"
+        "$mainModShift, R, exec, hyprctl reload"
+
+        # Screenshot & OCR
+        "$mainModShift, S, exec, grim -g \"$(slurp)\" - | wl-copy"
+        "$mainMod, O, exec, grim -g \"$(slurp)\" - | tesseract -l eng stdin stdout | sed \"s/ //g\" | wl-copy"
+        "$mainModShift, O, exec, grim -g \"$(slurp)\" - | tesseract -l jpn+eng stdin stdout | sed \"s/ //g\" | wl-copy"
+
+        # Audio & Brightness (swayosd)
+        ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+        ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
+        ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+        ", XF86AudioMicMute, exec, swayosd-client --input-volume mute-toggle"
+        ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+        ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
 
         # Focus
         "$mainMod, left, movefocus, l"
@@ -202,10 +163,10 @@
 
         # Special workspace
         "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod, S, movetoworkspace, +0"
-        "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod, S, movetoworkspace, special:magic"
-        "$mainMod, S, togglespecialworkspace, magic"
+
+        # Scroll workspaces
+        "$mainMod, mouse_down, workspace, e+1"
+        "$mainMod, mouse_up, workspace, e-1"
       ];
 
       bindl = [
@@ -218,30 +179,18 @@
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];
-
-      gesture = [
-        "3, horizontal, workspace"
-      ];
     };
-    extraConfig = ''
-      device {
-        name = elan0676:00-04f3:3195-touchpad
-        sensitivity = 0
-      }
-    '';
   };
 
-  # Dependencies for the config
-  home.packages = with pkgs; [
-    hyprpaper
-    swayidle
-    swayosd
-    wl-clipboard
-    grim
-    slurp
-    libnotify
-    wofi
-    mako
-    tesseract
-  ];
+  xdg.portal = {
+    enable = true;
+    config.common.default = "*";
+    extraPortals = [
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-gtk
+    ];
+  };
+
+  # GUI helpers and app binaries are managed by pacman.
+  home.packages = [];
 }

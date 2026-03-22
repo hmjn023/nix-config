@@ -40,7 +40,7 @@
     uv
     clinfo
     vulkan-tools
-    (llama-cpp.override { cudaSupport = true; })
+    (llama-cpp.override {cudaSupport = true;})
 
     # KDE Tools
     kdePackages.systemsettings

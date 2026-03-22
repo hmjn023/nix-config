@@ -1,36 +1,37 @@
-_: {
+{pkgs, ...}: {
   programs.wezterm = {
     enable = true;
+    package = pkgs.runCommand "wezterm-dummy" {} "mkdir -p $out";
+    enableZshIntegration = false;
     extraConfig = ''
       -- Pull in the wezterm API
       local wezterm = require("wezterm")
 
       -- This table will hold the configuration.
-      local config = {}
+      local config = wezterm.config_builder()
 
-      -- In newer versions of wezterm, use the config_builder which will
-      -- help provide clearer error messages
-      if wezterm.config_builder then
-        config = wezterm.config_builder()
-      end
+      -- Font configuration
+      config.font = wezterm.font("NotoSansM Nerd Font Mono")
+      config.font_size = 14.0
 
-      -- This is where you actually apply your config choices
+      -- Color scheme
+      config.color_scheme = "AdventureTime"
 
-      -- For example, changing the color scheme:
-      -- config.color_scheme = "AdventureTime"
-      config.color_scheme = "Ayu Mirage"
-      config.font = wezterm.font("Moralerspace Neon")
-      config.font_size = 24.0
-      config.window_background_opacity = 0.7
-      config.enable_wayland = true
-      -- config.front_end = "WebGpu"
-      config.keys = {
-        {
-          key = "Enter",
-          mods = "SHIFT",
-          action = wezterm.action.SendString("\n"),
-        },
+      -- Appearance
+      config.enable_tab_bar = false
+      config.window_background_opacity = 0.8
+      config.window_padding = {
+        left = 2,
+        right = 2,
+        top = 2,
+        bottom = 2,
       }
+
+      -- Performance
+      config.front_end = "WebGpu"
+
+      -- Default key assignments
+      config.disable_default_key_bindings = false
 
       -- and finally, return the configuration to wezterm
       return config

@@ -1,11 +1,5 @@
 _: {
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
-
   # Link the entire nvim config directory
+  # Neovim binary itself is managed by pacman
   xdg.configFile."nvim".source = ./nvim;
 }

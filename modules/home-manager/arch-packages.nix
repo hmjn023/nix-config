@@ -35,6 +35,7 @@
     # 純粋なAUR (手元でのビルドが必要なものなど)
     aur-build = [
       "swaylock-effects-git"
+			"antigravity"
     ];
 
     # デスクトップ環境・GUIツール (OSネイティブのドライバが必要なもの)
@@ -57,9 +58,14 @@ in {
   home.activation = {
     syncArchPackages = lib.hm.dag.entryAfter ["writeBoundary"] ''
       if command -v paru > /dev/null; then
-        echo "Updating Arch Linux packages with paru..."
-        # $DRY_RUN_CMD ensures compatibility with home-manager switch --dry-run
-        $DRY_RUN_CMD paru -S --needed --noconfirm ${pkgsString}
+        # Check which packages are not installed
+        MISSING_PKGS=$(paru -T ${pkgsString})
+
+        if [ -n "$MISSING_PKGS" ]; then
+          echo "Installing missing Arch Linux packages with paru..."
+          # $DRY_RUN_CMD ensures compatibility with home-manager switch --dry-run
+          $DRY_RUN_CMD paru -S --noconfirm $MISSING_PKGS
+        fi
       else
         echo "Warning: paru not found. Skipping Arch package sync."
       fi

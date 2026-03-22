@@ -25,6 +25,11 @@
       la = "ls -a";
       ll = "ls -ls";
       lh = "ls -lh";
+
+      # Home Manager Flake aliases
+      hm = "nix run home-manager/master -- --flake .#hmjn";
+      hms = "nix run home-manager/master -- --flake .#hmjn switch";
+      hmn = "nix run home-manager/master -- --flake .#hmjn news";
     };
 
     # Session variables
@@ -47,7 +52,7 @@
     '';
 
     # Extra initialization
-    initExtra = ''
+    initContent = ''
       # PATH exports
       export PATH=$HOME/.local/bin:$HOME/Android/Sdk/platform-tools:$HOME/flutter/bin:$GOPATH/bin:$CARGO_HOME/bin:$HOME/.bun/bin:/var/lib/snapd/snap/bin:$PATH
 
@@ -130,7 +135,7 @@
           owner = "aoyama-val";
           repo = "zsh-romaji-complete";
           rev = "master";
-          sha256 = "sha256-mgZGOSDFSvOfb8VRvnE58mGGkLj6y1GN12t2q6VDE7g=";
+          sha256 = "sha256-fe78ahd/q1CahF9p7mqk+wrgbVL7RcuFJEd5Hpf3i1w=";
         };
       }
       {

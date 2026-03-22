@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.swaylock = {
     enable = true;
-    package = pkgs.swaylock-effects;
+    package = pkgs.runCommand "swaylock-dummy" {} "mkdir -p $out";
     settings = {
       clock = true;
       screenshots = true;
