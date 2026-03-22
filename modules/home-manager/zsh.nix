@@ -40,6 +40,7 @@
       CARGO_HOME = "${config.home.homeDirectory}/.cargo";
       VISUAL = "nvim";
       EDITOR = "nvim";
+      BROWSER = "google-chrome-stable";
       VCPKG_ROOT = "/opt/vcpkg";
       VCPKG_DOWNLOADS = "/var/cache/vcpkg";
       MAKEFLAGS = "-j$(nproc --all)";
@@ -53,6 +54,9 @@
 
     # Extra initialization
     initContent = ''
+      # CHROME_EXECUTABLE for some tools
+      export CHROME_EXECUTABLE=$(which google-chrome-stable)
+
       # PATH exports
       export PATH=$HOME/.local/bin:$HOME/Android/Sdk/platform-tools:$HOME/flutter/bin:$GOPATH/bin:$CARGO_HOME/bin:$HOME/.bun/bin:/var/lib/snapd/snap/bin:$PATH
 

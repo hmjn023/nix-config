@@ -14,6 +14,7 @@
     ../../modules/home-manager/wezterm.nix
     ../../modules/home-manager/swaylock.nix
     ../../modules/home-manager/gtk.nix
+    ../../modules/home-manager/fonts.nix
     ../../modules/home-manager/proton-wrapper.nix
   ];
 

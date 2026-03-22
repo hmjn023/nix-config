@@ -11,7 +11,7 @@
       local config = wezterm.config_builder()
 
       -- Font configuration
-      config.font = wezterm.font("NotoSansM Nerd Font Mono")
+      config.font = wezterm.font("Moralerspace Neon")
       config.font_size = 14.0
 
       -- Color scheme
