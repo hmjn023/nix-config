@@ -42,6 +42,14 @@ nix flake update
 nix fmt
 ```
 
+### 静的解析 (Lint) とチェック
+
+`statix` や `deadnix` を使用したコード品質チェックが含まれています。これらを実行するには：
+
+```bash
+nix flake check
+```
+
 ## ディレクトリ構造
 
 - `hosts/`: マシン固有の設定（`home.nix` がメイン）。

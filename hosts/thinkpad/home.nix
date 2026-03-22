@@ -24,7 +24,7 @@
     stateVersion = "24.11";
   };
 
-  # 共通のCLIパッケージなどはここで管理
+  # Common CLI packages managed here
   home.packages = with pkgs; [
     gemini-cli
     kakasi

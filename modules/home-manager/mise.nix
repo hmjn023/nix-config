@@ -12,7 +12,7 @@ _: {
         gemini-cli = "latest";
       };
       settings = {
-        all_compile = false; # 強制コンパイルをオフ
+        all_compile = false; # Disable forced compilation
         experimental = true; # もし新しい機能を使うなら
       };
     };

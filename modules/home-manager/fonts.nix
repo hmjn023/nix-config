@@ -9,9 +9,9 @@
     };
   };
 
-  # ユーザーレベルで追加したいフォントがあればここに記述（システム側にあるなら不要）
+  # Optional: Define user-level fonts (typically managed by Arch system-wide)
   home.packages = with pkgs; [
-    # システム側(modules/nixos/fonts.nix)で入れているので、
-    # ここでは特定のアプリ用やユーザー固有のものがあれば追加します
+    # Already included via system-wide configuration (modules/nixos/fonts.nix)
+    # Add user-specific or application-specific fonts here if needed
   ];
 }
