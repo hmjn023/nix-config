@@ -8,30 +8,31 @@
       local wezterm = require("wezterm")
 
       -- This table will hold the configuration.
-      local config = wezterm.config_builder()
+      local config = {}
 
-      -- Font configuration
+      -- In newer versions of wezterm, use the config_builder which will
+      -- help provide clearer error messages
+      if wezterm.config_builder then
+        config = wezterm.config_builder()
+      end
+
+      -- This is where you actually apply your config choices
+
+      -- For example, changing the color scheme:
+      --config.color_scheme = "AdventureTime"
+      config.color_scheme = "Ayu Mirage"
       config.font = wezterm.font("Moralerspace Neon")
-      config.font_size = 14.0
-
-      -- Color scheme
-      config.color_scheme = "AyuMirage"
-
-      -- Appearance
-      config.enable_tab_bar = true
-      config.window_background_opacity = 0.6
-      config.window_padding = {
-        left = 2,
-        right = 2,
-        top = 2,
-        bottom = 2,
+      config.font_size = 24.0
+      config.window_background_opacity = 0.7
+      config.enable_wayland = true
+      config.front_end = "OpenGL"
+      config.keys = {
+        {
+          key = "Enter",
+          mods = "SHIFT",
+          action = wezterm.action.SendString("\n"),
+        },
       }
-
-      -- Performance
-      config.front_end = "WebGpu"
-
-      -- Default key assignments
-      config.disable_default_key_bindings = false
 
       -- and finally, return the configuration to wezterm
       return config
