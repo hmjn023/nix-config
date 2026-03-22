@@ -2,7 +2,7 @@
   programs.waybar = {
     enable = true;
     package = pkgs.runCommand "waybar-dummy" {} "mkdir -p $out";
-    systemd.enable = true;
+    systemd.enable = false;
     settings = {
       mainBar = {
         layer = "top";

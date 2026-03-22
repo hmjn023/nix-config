@@ -15,11 +15,11 @@
       config.font_size = 14.0
 
       -- Color scheme
-      config.color_scheme = "AdventureTime"
+      config.color_scheme = "AyuMirage"
 
       -- Appearance
-      config.enable_tab_bar = false
-      config.window_background_opacity = 0.8
+      config.enable_tab_bar = true
+      config.window_background_opacity = 0.6
       config.window_padding = {
         left = 2,
         right = 2,

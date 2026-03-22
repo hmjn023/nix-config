@@ -4,7 +4,12 @@ _: {
     enableZshIntegration = true;
     globalConfig = {
       tools = {
-        "npm:@google/gemini-cli" = "latest";
+				node = "latest";
+				uv = "latest";
+				aws-cli = "latest";
+				terraform = "latest";
+				claude = "latest";
+        gemini-cli = "latest";
       };
       settings = {
         all_compile = false; # 強制コンパイルをオフ
