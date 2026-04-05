@@ -1,7 +1,46 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  osConfig ? null,
+  ...
+}: let
+  monitors =
+    if osConfig == null
+    then []
+    else lib.attrByPath ["system" "monitors"] [] osConfig;
+in {
   # Services (Config only)
   services.swayosd.enable = true;
-  services.hyprpaper.enable = true;
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = [
+        "~/Pictures/paper.jpg"
+      ];
+      wallpaper =
+        if monitors == []
+        then [",~/Pictures/paper.jpg"]
+        else map (m: "${m.name},~/Pictures/paper.jpg") monitors;
+    };
+  };
+
+  systemd.user.services.fetch-wallpaper = {
+    Unit = {
+      Description = "Fetch wallpaper if missing";
+      Before = ["hyprpaper.service"];
+    };
+    Install.WantedBy = ["graphical-session.target"];
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "fetch-paper" ''
+        if [ ! -f "$HOME/Pictures/paper.jpg" ]; then
+          mkdir -p "$HOME/Pictures"
+          ${pkgs.curl}/bin/curl -L "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png" -o "$HOME/Pictures/paper.jpg"
+        fi
+      ''}";
+    };
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -9,7 +48,10 @@
     xwayland.enable = true;
 
     settings = {
-      monitor = [",highres,auto,1"];
+      monitor =
+        if monitors == []
+        then [",highres,auto,1"]
+        else map (m: "${m.name},${m.resolution},${m.position},${m.scale}") monitors;
       env = [
         "XCURSOR_SIZE,24"
         "GTK_IM_MODULE,fcitx"
@@ -61,6 +103,7 @@
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
+        allow_tearing = false;
       };
       decoration = {
         rounding = 10;
@@ -116,6 +159,8 @@
         "$mainModShift, R, exec, hyprctl reload"
 
         # Screenshot & OCR
+        "CTRL, Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
+        ", Print, exec, mkdir -p $HOME/Pictures/Screenshots && grim $HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H%M%S_screenshot.png') && notify-send \"Screenshot Saved\""
         "$mainModShift, S, exec, grim -g \"$(slurp)\" - | wl-copy"
         "$mainMod, O, exec, grim -g \"$(slurp)\" - | tesseract -l eng stdin stdout | sed \"s/ //g\" | wl-copy"
         "$mainModShift, O, exec, grim -g \"$(slurp)\" - | tesseract -l jpn+eng stdin stdout | sed \"s/ //g\" | wl-copy"
@@ -180,7 +225,18 @@
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];
+
+      gesture = [
+        "3, horizontal, workspace"
+      ];
     };
+
+    extraConfig = ''
+      device {
+        name = elan0676:00-04f3:3195-touchpad
+        sensitivity = 0
+      }
+    '';
   };
 
   xdg.portal = {
