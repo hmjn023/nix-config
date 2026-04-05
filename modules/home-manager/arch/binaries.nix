@@ -1,0 +1,28 @@
+{...}: {
+  my.arch.packages = [
+    "base-devel"
+    "git"
+    "neovim"
+    "tmux"
+    "fastfetch"
+    "btop"
+    "eza"
+    "fzf"
+    "jq"
+    "ripgrep"
+    "fd"
+    "bat"
+		"kakasi"
+    "wl-clipboard"
+    "libnotify"
+    "grim"
+    "slurp"
+    "google-chrome"
+    "discord"
+    "vesktop"
+    "vivaldi"
+    "localsend"
+    "prismlauncher"
+    "code"
+  ];
+}

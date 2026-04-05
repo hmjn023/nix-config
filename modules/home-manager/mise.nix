@@ -4,17 +4,17 @@ _: {
     enableZshIntegration = true;
     globalConfig = {
       tools = {
-				node = "latest";
-				uv = "latest";
-				bun = "latest";
-				pnpm = "latest";
-				aws-cli = "latest";
-				terraform = "latest";
-				claude = "latest";
-				codex = "latest";
+        node = "latest";
+        uv = "latest";
+        bun = "latest";
+        pnpm = "latest";
+        aws-cli = "latest";
+        terraform = "latest";
+        claude = "latest";
+        codex = "latest";
         gemini-cli = "latest";
-				"npm:ctx7" = "latest";
-				"npm:@playwright/cli" = "latest";
+        "npm:ctx7" = "latest";
+        "npm:@playwright/cli" = "latest";
       };
       settings = {
         all_compile = false; # Disable forced compilation

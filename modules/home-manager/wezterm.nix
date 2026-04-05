@@ -4,9 +4,6 @@
     package = pkgs.runCommand "wezterm-dummy" {} "mkdir -p $out";
     enableZshIntegration = false;
     extraConfig = ''
-      -- Pull in the wezterm API
-      local wezterm = require("wezterm")
-
       -- This table will hold the configuration.
       local config = {}
 
@@ -25,7 +22,6 @@
       config.font_size = 24.0
       config.window_background_opacity = 0.7
       config.enable_wayland = true
-      config.front_end = "OpenGL"
       config.keys = {
         {
           key = "Enter",

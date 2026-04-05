@@ -28,7 +28,11 @@
 
   my.hyprland = {
     monitors = [
-      "eDP-1, 1920x1200@60, 0x0, 1.25"
+      "DP-3, 3840x2160@60, 0x0, 1"
+    ];
+    workspaceRules = [
+      "1, monitor:DP-3"
+      "2, monitor:DP-3"
     ];
   };
 

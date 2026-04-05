@@ -1,6 +1,8 @@
 {
   config,
   pkgs,
+  ni-zsh,
+  zsh-romaji-complete,
   ...
 }: {
   programs.zsh = {
@@ -131,25 +133,15 @@
       unset SSH_ASKPASS
     '';
 
-    # Plugins
+    # Plugins (managed by Flake inputs)
     plugins = [
       {
         name = "zsh-romaji-complete";
-        src = pkgs.fetchFromGitHub {
-          owner = "aoyama-val";
-          repo = "zsh-romaji-complete";
-          rev = "master";
-          sha256 = "sha256-fe78ahd/q1CahF9p7mqk+wrgbVL7RcuFJEd5Hpf3i1w=";
-        };
+        src = zsh-romaji-complete;
       }
       {
         name = "ni";
-        src = pkgs.fetchFromGitHub {
-          owner = "azu";
-          repo = "ni.zsh";
-          rev = "master";
-          sha256 = "sha256-imYyRg2/N7rguEDHyqPRUw4n9lZFpAnfMQrfgTGszZk=";
-        };
+        src = ni-zsh;
       }
     ];
   };
