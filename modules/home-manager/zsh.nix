@@ -5,6 +5,16 @@
   zsh-romaji-complete,
   ...
 }: {
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.local/bin"
+    "${config.home.homeDirectory}/Android/Sdk/platform-tools"
+    "${config.home.homeDirectory}/flutter/bin"
+    "${config.home.homeDirectory}/go/bin"
+    "${config.home.homeDirectory}/.cargo/bin"
+    "${config.home.homeDirectory}/.bun/bin"
+    "/var/lib/snapd/snap/bin"
+  ];
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -55,24 +65,17 @@
     '';
 
     # Extra initialization
-    initContent = ''
+    initExtra = ''
       # CHROME_EXECUTABLE for some tools
-      export CHROME_EXECUTABLE=$(which google-chrome-stable)
+      if command -v google-chrome-stable &> /dev/null; then
+        export CHROME_EXECUTABLE=$(which google-chrome-stable)
+      fi
 
-      # PATH exports
-      export PATH=$HOME/.local/bin:$HOME/Android/Sdk/platform-tools:$HOME/flutter/bin:$GOPATH/bin:$CARGO_HOME/bin:$HOME/.bun/bin:/var/lib/snapd/snap/bin:$PATH
-
-      # uv completion
+      # Completions for tools not managed by Nix/Home Manager integration
       if command -v uv &> /dev/null; then
         eval "$(uv generate-shell-completion zsh)"
       fi
 
-      # bun completion
-      if [ -s "$HOME/.bun/_bun" ]; then
-        source "$HOME/.bun/_bun"
-      fi
-
-      # npm completion
       if command -v npm &> /dev/null; then
         eval "$(npm completion)"
       fi
@@ -124,7 +127,7 @@
 
       bindkey "^I" menu-expand-or-complete
 
-      # Broot
+      # Broot integration
       if [ -f $HOME/.config/broot/launcher/bash/br ]; then
         source $HOME/.config/broot/launcher/bash/br
       fi
