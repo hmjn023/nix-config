@@ -23,8 +23,10 @@ vim.keymap.set("t", "<C-t>", "<cmd>ToggleTerm<CR>", opts)
 vim.keymap.set("n", "<Leader>ss", "<cmd>vsplit<CR>", opts)
 vim.keymap.set("n", "<Leader>sh", "<cmd>split<CR>", opts)
 
--- Format (updated to use LSP)
-vim.keymap.set("n", "<Leader>f", function() vim.lsp.buf.format({ async = true }) end, opts)
+-- Format (conform with LSP fallback)
+vim.keymap.set("n", "<Leader>f", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, opts)
 
 -- LSP keymaps (these will be set up in lsp.lua)
 -- Global diagnostic mappings

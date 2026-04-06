@@ -12,7 +12,7 @@
     "ripgrep"
     "fd"
     "bat"
-		"kakasi"
+    "kakasi"
     "wl-clipboard"
     "libnotify"
     "grim"

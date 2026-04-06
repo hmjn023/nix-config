@@ -11,8 +11,9 @@ return {
 				},
 			},
 		})
+		-- automatic_installation disabled: LSP servers managed via paru on Arch
 		require("mason-lspconfig").setup({
-			automatic_installation = true,
+			automatic_installation = false,
 		})
 	end,
 }

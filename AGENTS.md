@@ -1,15 +1,21 @@
 # Nix Configuration (NixOS & Home Manager)
 
-This repository contains a Nix Flake configuration for managing personal dotfiles and system settings. It is currently in a transition phase from full NixOS management to user-level Home Manager management on Arch Linux (specifically CachyOS).
+This repository contains a Nix Flake configuration for managing personal dotfiles and user environments. **All hosts (ThinkPad and Dell Desktop) have transitioned to Arch Linux (CachyOS). NixOS is no longer used, and this repository is strictly for Home Manager configuration.**
 
 ## Project Overview
 
-- **Main Technologies**: Nix Flakes, Home Manager, NixOS, Arch Linux (CachyOS).
-- **Architecture**: Modularized Nix configuration.
-  - `hosts/`: Machine-specific entry points (e.g., `thinkpad`, `dell-desk`).
-  - `modules/home-manager/`: Modularized user configurations (Zsh, Git, Hyprland, Kitty, etc.).
-  - `modules/nixos/`: (Legacy/Legacy-support) System-level configurations.
-  - `nix/`: Development shells and utility Nix scripts.
+- **Main Technologies**: Nix Flakes, Home Manager, Arch Linux (CachyOS).
+- **Architecture**: Modularized Home Manager configuration.
+  - `hosts/`: Machine-specific entry points (ThinkPad/Dell) using `home.nix`.
+  - `modules/home-manager/`: Modularized user configurations.
+  - `modules/nixos/`: **Legacy - Do not use.**
+
+## Policy & Conventions
+
+- **Home Manager Only**: All changes must be scoped to Home Manager. Do not attempt to modify NixOS system configurations.
+- **No Package Management**: Do not add system or user packages via Nix in this repository. Package management is handled separately (e.g., via Arch/Paru). This repo is for **configuration only**.
+- **Formatting**: All `.nix` files must be formatted using `alejandra`.
+- **Linting**: Static analysis via `statix` and `deadnix`.
 
 ## Key Commands
 

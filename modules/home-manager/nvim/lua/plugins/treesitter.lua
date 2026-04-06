@@ -1,15 +1,15 @@
--- Treesitter configuration
+-- Treesitter configuration (new API post-rewrite)
 return {
 	"nvim-treesitter/nvim-treesitter",
-	version = "v0.9.3",
 	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			highlight = { enable = true },
-			indent = { enable = true },
+		require("nvim-treesitter").setup({
 			auto_install = true,
+			-- "vim" and "vimdoc" excluded: Neovim 0.11+ ships these in
+			-- /usr/lib/nvim/parser/ and its runtime queries target that version.
+			-- Installing via nvim-treesitter causes a parser/query mismatch.
 			ensure_installed = {
-				"lua", "vim", "vimdoc", "query",
+				"lua", "query",
 				"javascript", "typescript", "tsx",
 				"python", "rust", "go", "java",
 				"html", "css", "json", "yaml", "toml",

@@ -1,15 +1,6 @@
--- Trouble.nvim configuration
+-- Trouble.nvim v3 configuration
 return {
 	"folke/trouble.nvim",
 	cmd = "Trouble",
-	config = function()
-		require("trouble").setup({
-			signs = {
-				error = "",
-				warning = "",
-				hint = "",
-				information = "",
-			},
-		})
-	end,
+	opts = {},
 }
