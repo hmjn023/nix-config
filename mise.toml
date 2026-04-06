@@ -32,18 +32,3 @@ if ! grep -q "\\[chaotic-aur\\]" /etc/pacman.conf; then
 fi
 sudo pacman -Sy
 """
-
-[tasks.switch]
-description = "Apply Home Manager configuration and sync Arch packages"
-run = """
-set -e
-# 1. Apply Home Manager configuration
-nix run github:nix-community/home-manager -- switch --flake .#hmjn
-
-# 2. Extract Arch packages from Nix and sync with paru
-echo "Syncing Arch Linux packages via paru..."
-PKGS=$(nix eval .#homeConfigurations.hmjn.config.my.arch.packages --json | jq -r '.[]' | xargs)
-if [ -n "$PKGS" ]; then
-  paru -Syu --noconfirm --needed $PKGS
-fi
-"""

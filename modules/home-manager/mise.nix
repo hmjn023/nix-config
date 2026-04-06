@@ -15,6 +15,8 @@ _: {
         gemini-cli = "latest";
         "npm:ctx7" = "latest";
         "npm:@playwright/cli" = "latest";
+				"cargo:rtk-ai/rtk" = "latest";
+				"github:trkbt10/indexion" = "latest";
       };
       settings = {
         all_compile = false; # Disable forced compilation
