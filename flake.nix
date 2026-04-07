@@ -92,6 +92,17 @@
       ];
     };
 
+    homeConfigurations.wsl-ubuntu = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest ni-zsh zsh-romaji-complete;};
+      modules = [
+        ./hosts/wsl-ubuntu/home.nix
+      ];
+    };
+
     nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs compressExtensions;};
       modules = [
