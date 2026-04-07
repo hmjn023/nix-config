@@ -8,6 +8,12 @@ return {
 	},
 	config = function()
 		require("noice").setup({
+			cmdline = {
+				format = {
+					-- Remove lang = "vim" to avoid treesitter parser/query version mismatch
+					cmdline = { pattern = "^:", icon = "" },
+				},
+			},
 			lsp = {
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,

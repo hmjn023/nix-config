@@ -8,13 +8,10 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
-		-- Global variable to toggle auto-formatting
+		-- Global variable to toggle auto-formatting (read by conform.nvim)
 		vim.g.auto_format_enabled = false
 
-		-- Create autogroup for formatting once
-		local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
-
-		-- Use LspAttach event to setup keymaps and format-on-save for all LSP servers
+		-- Use LspAttach event to setup keymaps for all LSP servers
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 			callback = function(ev)
@@ -63,51 +60,9 @@ return {
 						end,
 					})
 				end
-
-				-- Setup format on save for this buffer
-				if client and client.supports_method("textDocument/formatting") then
-					vim.api.nvim_clear_autocmds({ group = format_group, buffer = bufnr })
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = format_group,
-						buffer = bufnr,
-						callback = function()
-							if vim.g.auto_format_enabled then
-								vim.lsp.buf.format({ async = false })
-							end
-						end,
-					})
-				end
 			end,
 		})
 
-		local cmp = require("cmp")
-		cmp.setup({
-			snippet = {
-				expand = function(args)
-					vim.fn["vsnip#anonymous"](args.body)
-				end,
-			},
-			sources = {
-				{ name = "nvim_lsp" },
-				{ name = "nvim_lsp_signature_help" },
-				{ name = "path" },
-				{ name = "buffer" },
-				{ name = "nvim_lua" },
-				{ name = "luasnip" },
-				{ name = "cmdline" },
-				{ name = "git" },
-				{ name = "vsnip" },
-			},
-			mapping = {
-				["<CR>"] = cmp.mapping.confirm({ select = true }),
-				["<Tab>"] = cmp.mapping.select_next_item(),
-				["<S-Tab>"] = cmp.mapping.select_prev_item(),
-			},
-			experimental = {
-				ghost_text = true,
-			},
-		})
-		
 		-- Setup completion capabilities
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -149,22 +104,19 @@ return {
 					scope = "cursor",
 				}
 				vim.diagnostic.open_float(nil, opts)
-			end
+			end,
 		})
 
-		-- Set updatetime for CursorHold event (default is 4000ms)
 		vim.opt.updatetime = 300
 
 		-- Helper function to find root directory
 		local function find_root(patterns)
 			return function(fname)
-				local util = vim.fs
-				return util.root(fname, patterns)
+				return vim.fs.root(fname, patterns)
 			end
 		end
 
-		-- LSP server configurations using new vim.lsp.config API
-		-- Ruff for Python LSP (handles linting, formatting, and basic language features)
+		-- LSP server configurations using vim.lsp.config API (Neovim 0.11+)
 		vim.lsp.config.ruff = {
 			cmd = { "ruff", "server" },
 			filetypes = { "python" },
@@ -173,14 +125,9 @@ return {
 			settings = {
 				args = {},
 				lineLength = 88,
-				lint = {
-					enable = true,
-					select = {"ALL"},  -- Enable all rules (can be customized)
-				},
-				format = {
-					enable = true,
-				}
-			}
+				lint = { enable = true, select = { "ALL" } },
+				format = { enable = true },
+			},
 		}
 
 		vim.lsp.config.gopls = {
@@ -225,7 +172,6 @@ return {
 			capabilities = capabilities,
 		}
 
-		-- Biome LSP for JS/TS/HTML/CSS/Vue
 		vim.lsp.config.biome = {
 			cmd = { "biome", "lsp-proxy" },
 			filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "json", "jsonc", "html", "css", "vue" },
@@ -268,9 +214,7 @@ return {
 			capabilities = capabilities,
 			settings = {
 				["rust-analyzer"] = {
-					checkOnSave = {
-						command = "clippy",
-					},
+					checkOnSave = { command = "clippy" },
 				},
 			},
 		}
@@ -289,39 +233,43 @@ return {
 			capabilities = capabilities,
 			settings = {
 				Lua = {
-					runtime = {
-						version = "LuaJIT",
-					},
+					runtime = { version = "LuaJIT" },
 					workspace = {
 						library = vim.api.nvim_get_runtime_file("", true),
 						checkThirdParty = false,
 					},
-					diagnostics = {
-						globals = { "vim" },
-						enable = true,
-					},
-					format = {
-						enable = true,
-					},
-					telemetry = {
-						enable = false,
-					},
+					diagnostics = { globals = { "vim" }, enable = true },
+					format = { enable = true },
+					telemetry = { enable = false },
 				},
 			},
 		}
 
-		-- Enable all configured servers
+		vim.lsp.config.terraformls = {
+			cmd = { "terraform-ls", "serve" },
+			filetypes = { "terraform", "terraform-vars" },
+			root_dir = find_root({ ".terraform", ".git" }),
+			capabilities = capabilities,
+		}
+
 		local servers = {
 			"ruff", "gopls", "clangd", "kotlin_language_server",
 			"ltex", "taplo", "zk", "biome", "cssls", "tailwindcss",
-			"texlab", "jdtls", "rust_analyzer", "html", "lua_ls"
+			"texlab", "jdtls", "rust_analyzer", "html", "lua_ls",
+			"terraformls",
 		}
-
 		for _, server_name in ipairs(servers) do
 			vim.lsp.enable(server_name)
 		end
 
-		-- Setup fenced languages for markdown
+		vim.filetype.add({
+			extension = {
+				tf = "terraform",
+				tfvars = "terraform-vars",
+				tfstate = "json",
+			},
+		})
+
 		vim.g.markdown_fenced_languages = {
 			"ts=typescript",
 			"js=javascript",
@@ -329,29 +277,10 @@ return {
 			"lua=lua",
 		}
 
-		-- none-ls configuration for formatting and diagnostics
-		local null_ls = require("null-ls")
-
-		null_ls.setup({
-			sources = {
-				-- Basic formatters (CSS/HTML now handled by Biome)
-				null_ls.builtins.formatting.prettier.with({
-					filetypes = { "scss", "markdown" },
-				}),
-				null_ls.builtins.formatting.stylua,
-			},
-		})
-
-		-- Manual format keymap: <leader><space>
-		vim.keymap.set("n", "<leader><space>", function()
-			vim.lsp.buf.format({ async = false })
-		end, { noremap = true, silent = true, desc = "Format buffer" })
-
-		-- Toggle auto-format: <leader><space><space>
+		-- Toggle auto-format on save: <leader><space><space>
 		vim.keymap.set("n", "<leader><space><space>", function()
 			vim.g.auto_format_enabled = not vim.g.auto_format_enabled
-			local status = vim.g.auto_format_enabled and "enabled" or "disabled"
-			print("Auto-format " .. status)
+			print("Auto-format " .. (vim.g.auto_format_enabled and "enabled" or "disabled"))
 		end, { noremap = true, silent = true, desc = "Toggle auto-format on save" })
 	end,
 }

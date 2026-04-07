@@ -1,7 +1,8 @@
 {pkgs, ...}: {
   programs.waybar = {
     enable = true;
-    systemd.enable = true;
+    package = pkgs.runCommand "waybar-dummy" {} "mkdir -p $out";
+    systemd.enable = false;
     settings = {
       mainBar = {
         layer = "top";

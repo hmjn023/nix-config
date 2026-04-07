@@ -15,6 +15,16 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Zsh Plugins
+    ni-zsh = {
+      url = "github:azu/ni.zsh";
+      flake = false;
+    };
+    zsh-romaji-complete = {
+      url = "github:aoyama-val/zsh-romaji-complete";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -24,6 +34,8 @@
     chaotic,
     home-manager,
     pre-commit-hooks,
+    ni-zsh,
+    zsh-romaji-complete,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -56,6 +68,41 @@
       inherit compressExtensions;
     };
 
+    homeConfigurations.thinkpad = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [chaotic.overlays.default];
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest ni-zsh zsh-romaji-complete;};
+      modules = [
+        ./hosts/thinkpad/home.nix
+      ];
+    };
+
+    homeConfigurations.dell-desk = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [chaotic.overlays.default];
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest ni-zsh zsh-romaji-complete;};
+      modules = [
+        ./hosts/dell-desk/home.nix
+      ];
+    };
+
+    homeConfigurations."hmjn@wsl-ubuntu" = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      extraSpecialArgs = {inherit inputs pkgs-latest ni-zsh zsh-romaji-complete;};
+      modules = [
+        ./hosts/wsl-ubuntu/home.nix
+      ];
+    };
+
     nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs compressExtensions;};
       modules = [
@@ -68,17 +115,17 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
+            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions ni-zsh zsh-romaji-complete;};
             users.hmjn = import ./hosts/thinkpad/home.nix;
           };
         }
       ];
     };
 
-    nixosConfigurations.desk-dell = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.dell-desk = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs compressExtensions;};
       modules = [
-        ./hosts/desk-dell/default.nix
+        ./hosts/dell-desk/default.nix
         {nixpkgs.overlays = [chaotic.overlays.default];}
 
         home-manager.nixosModules.home-manager
@@ -87,8 +134,8 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions;};
-            users.hmjn = import ./hosts/desk-dell/home.nix;
+            extraSpecialArgs = {inherit inputs pkgs-latest compressExtensions ni-zsh zsh-romaji-complete;};
+            users.hmjn = import ./hosts/dell-desk/home.nix;
           };
         }
       ];

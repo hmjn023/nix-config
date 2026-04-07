@@ -8,6 +8,7 @@ vim.opt.splitright = true
 vim.opt.completeopt = "menuone,noinsert"
 vim.opt.pumblend = 20
 vim.opt.cursorline = true
+vim.opt.clipboard = "unnamedplus"
 
 -- Neovide specific options
 if vim.g.neovide then

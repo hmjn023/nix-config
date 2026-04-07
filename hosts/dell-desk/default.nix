@@ -29,7 +29,7 @@
 
   # Networking
   networking = {
-    hostName = "desk-dell";
+    hostName = "dell-desk";
     wireless.iwd.enable = true;
     useDHCP = true;
   };
@@ -37,15 +37,9 @@
   # Monitor configuration (Example for Desktop)
   system.monitors = [
     {
-      name = "DP-5";
+      name = "DP-3";
       resolution = "3840x2160";
       position = "0x0";
-      scale = "1";
-    }
-    {
-      name = "HDMI-A-1";
-      resolution = "1920x1080";
-      position = "3840x0";
       scale = "1";
     }
   ];

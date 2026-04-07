@@ -1,2 +1,34 @@
 [tools]
 biome = "latest"
+
+[tasks.setup]
+description = "Full project initialization (Nix + Home Manager + Chaotic-AUR)"
+run = [
+  "mise run setup_nix",
+  "mise run setup_chaotic",
+  "mise run switch"
+]
+
+[tasks.setup_nix]
+description = "Initialize Nix configuration"
+run = """
+mkdir -p ~/.config/nix
+if ! grep -q "experimental-features" ~/.config/nix/nix.conf 2>/dev/null; then
+  echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+fi
+nix flake update
+"""
+
+[tasks.setup_chaotic]
+description = "Setup Chaotic-AUR repository for Arch Linux"
+run = """
+set -e
+echo "Setting up Chaotic-AUR..."
+sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key 3056513887B78AEB
+sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+if ! grep -q "\\[chaotic-aur\\]" /etc/pacman.conf; then
+  echo -e "\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
+fi
+sudo pacman -Sy
+"""

@@ -1,34 +1,32 @@
-# NixOS 設定
+# NixOS 設定 (Home Manager 移行中)
 
-このリポジトリには、Nix Flakes と Home Manager を使用して管理されている個人の NixOS 設定が含まれています。複数のホストをサポートし、モジュール化された構造を採用しています。
+> [!IMPORTANT]
+> **現在 NixOS から卒業し、Arch Linux (CachyOS) 上で Home Manager を使用する構成へ移行中です。**
+> システム全体（NixOS）の管理から、ユーザー環境（Home Manager）のみの管理へとシフトしています。
+
+このリポジトリには、Nix Flakes と Home Manager を使用して管理されている個人の設定が含まれています。
 
 ## ホスト構成
 
 現在、以下のホスト設定が定義されています：
 
-- `thinkpad`: Lenovo ThinkPad (メインのノートPC)
-- `desk-dell`: Dell デスクトップ
+- `thinkpad`: Lenovo ThinkPad (メインのノートPC - Arch Linux + Home Manager)
+- `desk-dell`: Dell デスクトップ (移行中)
 
 ## 使い方
 
-### 設定の適用 (システム切り替え)
+### 設定の適用 (Home Manager)
 
-現在のシステムに設定を適用するには、以下のコマンドを実行します：
+現在のユーザー環境に設定を適用するには、以下のコマンドを実行します：
 
 ```bash
-# thinkpad の場合
-sudo nixos-rebuild switch --flake .#thinkpad
-
-# desk-dell の場合
-sudo nixos-rebuild switch --flake .#desk-dell
-
-# ホスト名が一致している場合は単に：
-sudo nixos-rebuild switch --flake .
+# flake を適用
+home-manager switch --flake .
 ```
 
-### システムの更新 (チャネルの更新)
+### システムの更新 (Flake)
 
-Flake の入力（チャネル）を最新バージョンに更新するには：
+Flake の入力（lockファイル）を最新バージョンに更新するには：
 
 ```bash
 nix flake update
@@ -54,7 +52,7 @@ nix flake check
 
 ## ディレクトリ構造
 
-- `hosts/`: マシン固有の設定。
-- `modules/nixos/`: システムレベルのモジュール。
+- `hosts/`: マシン固有の設定（`home.nix` がメイン）。
 - `modules/home-manager/`: Home Manager で管理されるユーザーレベルのモジュール。
+- `modules/nixos/`: (旧) システムレベルのモジュール。
 - `flake.nix`: 設定のエントリポイント。
