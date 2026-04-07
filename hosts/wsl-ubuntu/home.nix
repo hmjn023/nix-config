@@ -7,7 +7,7 @@
   imports = [
     ../../modules/home-manager/zsh.nix
     ../../modules/home-manager/git.nix
-../../modules/home-manager/ranger.nix
+    ../../modules/home-manager/ranger.nix
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/mise.nix
     ../../modules/home-manager/nvim.nix
