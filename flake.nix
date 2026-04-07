@@ -92,7 +92,7 @@
       ];
     };
 
-    homeConfigurations.wsl-ubuntu = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."hmjn@wsl-ubuntu" = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;

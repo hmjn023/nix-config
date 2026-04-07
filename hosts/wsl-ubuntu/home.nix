@@ -19,7 +19,17 @@
     stateVersion = "24.11";
   };
 
-  home.packages = with pkgs; [];
+  home.sessionPath = [
+    "$HOME/.nix-profile/bin"
+  ];
+
+  home.packages = with pkgs; [
+    neovim
+    lsd
+    fd
+    ripgrep
+    jq
+  ];
 
   programs.home-manager.enable = true;
   news.display = "silent";
