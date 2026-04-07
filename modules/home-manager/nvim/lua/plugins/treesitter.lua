@@ -14,6 +14,7 @@ return {
 				"python", "rust", "go", "java",
 				"html", "css", "json", "yaml", "toml",
 				"markdown", "bash",
+				"terraform", "hcl",
 			},
 		})
 	end,

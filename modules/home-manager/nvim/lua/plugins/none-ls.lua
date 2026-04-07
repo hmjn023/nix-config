@@ -9,6 +9,8 @@ return {
 				lua = { "stylua" },
 				scss = { "prettier" },
 				markdown = { "prettier" },
+				terraform = { "terraform_fmt" },
+				["terraform-vars"] = { "terraform_fmt" },
 			},
 			format_on_save = function()
 				if vim.g.auto_format_enabled then

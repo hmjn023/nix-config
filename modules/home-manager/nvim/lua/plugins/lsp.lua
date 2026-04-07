@@ -245,14 +245,30 @@ return {
 			},
 		}
 
+		vim.lsp.config.terraformls = {
+			cmd = { "terraform-ls", "serve" },
+			filetypes = { "terraform", "terraform-vars" },
+			root_dir = find_root({ ".terraform", ".git" }),
+			capabilities = capabilities,
+		}
+
 		local servers = {
 			"ruff", "gopls", "clangd", "kotlin_language_server",
 			"ltex", "taplo", "zk", "biome", "cssls", "tailwindcss",
 			"texlab", "jdtls", "rust_analyzer", "html", "lua_ls",
+			"terraformls",
 		}
 		for _, server_name in ipairs(servers) do
 			vim.lsp.enable(server_name)
 		end
+
+		vim.filetype.add({
+			extension = {
+				tf = "terraform",
+				tfvars = "terraform-vars",
+				tfstate = "json",
+			},
+		})
 
 		vim.g.markdown_fenced_languages = {
 			"ts=typescript",
