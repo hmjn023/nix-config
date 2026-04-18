@@ -63,7 +63,7 @@ in {
           "fcitx5"
           "[workspace 1 silent] wezterm"
           "[workspace 2 silent] google-chrome-stable"
-          "[workspace 9 silent] discord-canary"
+          "[workspace 9 silent] discord"
           "[workspace 10 silent] kitty btop"
         ];
 
