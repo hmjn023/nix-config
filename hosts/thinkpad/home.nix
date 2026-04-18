@@ -24,6 +24,7 @@
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/fonts.nix
     ../../modules/home-manager/proton-wrapper.nix
+    ../../modules/home-manager/electron-ime.nix
   ];
 
   my.hyprland = {
