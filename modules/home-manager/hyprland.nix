@@ -107,7 +107,7 @@ in {
         };
 
         dwindle = {
-          pseudotile = "yes";
+          # pseudotile = "yes";
           preserve_split = "yes";
         };
 
